@@ -49,14 +49,51 @@ li {
   transition: ease-in-out .5s;
 }
 
-.homepage, .viewsub {
+.homepage, .viewsub, .signup {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+.signup-holder{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup {
+  background-color: white;
+  width: 450px;
+  height: 601px;
+  border-radius: 30px;
+  box-shadow: 4px 4px 4px gray;
+}
+
 .heading{
   font-weight: bold;
   color: white;
+}
+
+.input-holder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+#signup {
+  color: #001D3D;
+  font-weight: bold;
+}
+
+.login-text {
+  color: #001D3D;
+  font-weight: bold;
+}
+
+.input-rounded .MuiOutlinedInput-root {
+  border-radius: 20px;
 }
