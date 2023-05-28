@@ -12,6 +12,10 @@ code {
   font-family: 'Cascadia Code';
 }
 
+h1 {
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
 nav {
   display: flex;
   flex-direction: row;
@@ -50,7 +54,7 @@ li {
 
 .link-styles:hover {
   font-weight: bold;
-  transition: ease-in-out .5s;
+  transition: ease-in-out 0s;
 }
 
 .homepage, .viewsub, .signup {
@@ -175,4 +179,11 @@ li {
 
 .instructions-offscreen {
   display: none;
+}
+
+/*---*/
+
+.link-field {
+  border-radius: 20px;
+  width: 100%;
 }
