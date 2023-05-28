@@ -183,9 +183,20 @@ li {
   display: none;
 }
 
-/*---*/
+/*--stepper--*/
 
 .link-field {
   border-radius: 20px;
   width: 100%;
+}
+
+/*--view submissions--*/
+
+.data-table {
+  width: 100%;
+}
+
+.MuiToolbar-root {
+  font-family: 'Poppins';
+  color: white
 }
