@@ -9,7 +9,7 @@ export default function Root() {
       <nav>
         <ul>
           <li><Link to={`/`} className="link-styles">Home</Link></li>
-          <li><Link to={`/view-submissions`} className="link-styles">View Submissions</Link></li>
+          <li><Link to={`/view-submissions`} className="link-styles">View Clearance Applications</Link></li>
         </ul>
         <div className="user-icon-holder">
           <div className="user-icon">

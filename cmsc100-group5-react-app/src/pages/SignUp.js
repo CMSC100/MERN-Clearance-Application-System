@@ -68,6 +68,9 @@ export default function SignUp() {
             sx = {{
               '& .MuiFormLabel-root': {
                   fontFamily: 'Poppins',
+              },
+              '& .MuiFormLabel-asterisk': {
+                fontSize: "16px"
               }
             }}
           />
@@ -79,6 +82,9 @@ export default function SignUp() {
             sx = {{
               '& .MuiFormLabel-root': {
                   fontFamily: 'Poppins',
+              },
+              '& .MuiFormLabel-asterisk': {
+                fontSize: "16px"
               }
             }}
           />
@@ -91,6 +97,9 @@ export default function SignUp() {
             sx = {{
               '& .MuiFormLabel-root': {
                   fontFamily: 'Poppins',
+              },
+              '& .MuiFormLabel-asterisk': {
+                fontSize: "16px"
               }
             }}
           />
@@ -108,7 +117,10 @@ export default function SignUp() {
             onBlur={() => setUpMailFocus(false)}
             sx = {{
               '& .MuiFormLabel-root': {
-                  fontFamily: 'Poppins',
+                fontFamily: 'Poppins',
+              },
+              '& .MuiFormLabel-asterisk': {
+                fontSize: "16px"
               }
             }}
           />
@@ -130,6 +142,9 @@ export default function SignUp() {
             sx = {{
               '& .MuiFormLabel-root': {
                   fontFamily: 'Poppins',
+              },
+              '& .MuiFormLabel-asterisk': {
+                fontSize: "16px"
               }
             }}
           />
@@ -152,6 +167,9 @@ export default function SignUp() {
             sx = {{
               '& .MuiFormLabel-root': {
                   fontFamily: 'Poppins',
+              },
+              '& .MuiFormLabel-asterisk': {
+                fontSize: "16px"
               }
             }}
           />

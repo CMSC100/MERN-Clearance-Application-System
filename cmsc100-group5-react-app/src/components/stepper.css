@@ -40,6 +40,7 @@ span {
     margin: 20px 0 0 85.33px;
     box-sizing: border-box;
     padding: 0px;
-    background-color: white;
     border-radius: 20px;
+    justify-content: center;
+    align-items: center;
 }

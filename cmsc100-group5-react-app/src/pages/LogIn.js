@@ -65,6 +65,9 @@ export default function SignUp() {
                 sx = {{
                     '& .MuiFormLabel-root': {
                         fontFamily: 'Poppins',
+                    },
+                    '& .MuiFormLabel-asterisk': {
+                      fontSize: "16px"
                     }
                 }}
             />
@@ -87,6 +90,9 @@ export default function SignUp() {
                 sx = {{
                     '& .MuiFormLabel-root': {
                         fontFamily: 'Poppins',
+                    },
+                    '& .MuiFormLabel-asterisk': {
+                      fontSize: "16px"
                     }
                 }}
             />
@@ -102,9 +108,11 @@ export default function SignUp() {
                 sx={{
                 bgcolor: "#001D3D",
                 borderRadius: 20,
-                typography: "Poppins",
                 margin: 0,
                 marginTop: 2,
+                '& .MuiButtonBase-root': {
+                  fontFamily: 'Poppins'
+                }
                 }}
                 disabled={!validPwd ? true : false}
             >
