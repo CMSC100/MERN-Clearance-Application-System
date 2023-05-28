@@ -8,6 +8,7 @@ import Root from "./pages/Root";
 import Home from "./pages/Home";
 import ViewSubmissions from "./pages/ViewSubmissions";
 import SignUp from "./pages/SignUp";
+import LogIn from "./pages/LogIn";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,8 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/view-submissions", element: <ViewSubmissions /> },
-      { path: "/sign-up", element: <SignUp /> },
+      { path: "/signup", element: <SignUp /> },
+      { path: "/login", element: <LogIn /> },
     ],
   },
 ]);
