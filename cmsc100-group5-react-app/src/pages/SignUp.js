@@ -3,53 +3,54 @@ import { TextField } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
+import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
 
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,24}$/;
-const STDNUM_REGEX = /^(19[0-9]{2}|20[0-2][0-9])\d{3}$/;
+const PWD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,24}$/;
+const STDNUM_REGEX = /^(19[0-9]{2}|20[0-2][0-9])-\d{5}$/;
 const EMAIL_REGEX = /^[a-z0-9]+@up\.edu\.ph$/;
 
 export default function SignUp() {
   const userRef = useRef();
   const errRef = useRef();
 
-  const [pwd, setPwd] = useState('');
+  const [pwd, setPwd] = useState("");
   const [validPwd, setValidPwd] = useState(false);
   const [pwdFocus, setPwdFocus] = useState(false);
 
-  const [stdnum, setStdNum] = useState('');
+  const [stdnum, setStdNum] = useState("");
   const [validStdNum, setValidStdNum] = useState(false);
   const [stdNumFocus, setStdNumFocus] = useState(false);
 
-  const [upmail, setUpMail] = useState('');
+  const [upmail, setUpMail] = useState("");
   const [validUpMail, setValidUpMail] = useState(false);
   const [UpMailFocus, setUpMailFocus] = useState(false);
 
-  const [errMsg, setErrMsg] = useState('');
+  const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     userRef.current.focus();
-  }, [])
+  }, []);
 
   useEffect(() => {
     const res = PWD_REGEX.test(pwd);
     setValidPwd(res);
-  }, [pwd])
+  }, [pwd]);
 
   useEffect(() => {
     const res = STDNUM_REGEX.test(stdnum);
     setValidStdNum(res);
-  }, [stdnum])
+  }, [stdnum]);
 
   useEffect(() => {
     const res = EMAIL_REGEX.test(upmail);
     setValidUpMail(res);
-  }, [upmail])
+  }, [upmail]);
 
   useEffect(() => {
-    setErrMsg('');
-  }, [pwd])
+    setErrMsg("");
+  }, [pwd]);
 
   return (
     <div className="holder signup-holder">
@@ -65,13 +66,13 @@ export default function SignUp() {
             className="input-rounded fname"
             required
             inputRef={userRef}
-            sx = {{
-              '& .MuiFormLabel-root': {
-                  fontFamily: 'Poppins',
+            sx={{
+              "& .MuiFormLabel-root": {
+                fontFamily: "Poppins",
               },
-              '& .MuiFormLabel-asterisk': {
-                fontSize: "16px"
-              }
+              "& .MuiFormLabel-asterisk": {
+                fontSize: "16px",
+              },
             }}
           />
           <TextField
@@ -79,13 +80,13 @@ export default function SignUp() {
             variant="outlined"
             size="small"
             className="input-rounded mname"
-            sx = {{
-              '& .MuiFormLabel-root': {
-                  fontFamily: 'Poppins',
+            sx={{
+              "& .MuiFormLabel-root": {
+                fontFamily: "Poppins",
               },
-              '& .MuiFormLabel-asterisk': {
-                fontSize: "16px"
-              }
+              "& .MuiFormLabel-asterisk": {
+                fontSize: "16px",
+              },
             }}
           />
           <TextField
@@ -94,13 +95,13 @@ export default function SignUp() {
             size="small"
             className="input-rounded lname"
             required
-            sx = {{
-              '& .MuiFormLabel-root': {
-                  fontFamily: 'Poppins',
+            sx={{
+              "& .MuiFormLabel-root": {
+                fontFamily: "Poppins",
               },
-              '& .MuiFormLabel-asterisk': {
-                fontSize: "16px"
-              }
+              "& .MuiFormLabel-asterisk": {
+                fontSize: "16px",
+              },
             }}
           />
           <TextField
@@ -115,17 +116,27 @@ export default function SignUp() {
             onChange={(e) => setUpMail(e.target.value)}
             onFocus={() => setUpMailFocus(true)}
             onBlur={() => setUpMailFocus(false)}
-            sx = {{
-              '& .MuiFormLabel-root': {
-                fontFamily: 'Poppins',
+            sx={{
+              "& .MuiFormLabel-root": {
+                fontFamily: "Poppins",
               },
-              '& .MuiFormLabel-asterisk': {
-                fontSize: "16px"
-              }
+              "& .MuiFormLabel-asterisk": {
+                fontSize: "16px",
+              },
             }}
           />
-          <p id="upmailnote" className={UpMailFocus && upmail && !validUpMail ? 'instructions' : 'instructions-offscreen'}>
-            <FontAwesomeIcon icon={icon({name: 'info-circle'})} className="icon info-icon" />
+          <p
+            id="upmailnote"
+            className={
+              UpMailFocus && upmail && !validUpMail
+                ? "instructions"
+                : "instructions-offscreen"
+            }
+          >
+            <FontAwesomeIcon
+              icon={icon({ name: "info-circle" })}
+              className="icon info-icon"
+            />
             Please enter a valid UP Mail, ending with <code>@up.edu.ph</code>.
           </p>
           <TextField
@@ -139,18 +150,29 @@ export default function SignUp() {
             onChange={(e) => setStdNum(e.target.value)}
             onFocus={() => setStdNumFocus(true)}
             onBlur={() => setStdNumFocus(false)}
-            sx = {{
-              '& .MuiFormLabel-root': {
-                  fontFamily: 'Poppins',
+            sx={{
+              "& .MuiFormLabel-root": {
+                fontFamily: "Poppins",
               },
-              '& .MuiFormLabel-asterisk': {
-                fontSize: "16px"
-              }
+              "& .MuiFormLabel-asterisk": {
+                fontSize: "16px",
+              },
             }}
           />
-          <p id="stdnumnote" className={stdNumFocus && stdnum && !validStdNum ? 'instructions' : 'instructions-offscreen'}>
-            <FontAwesomeIcon icon={icon({name: 'info-circle'})} className="icon info-icon" />
-            Please enter a valid student number.
+          <p
+            id="stdnumnote"
+            className={
+              stdNumFocus && stdnum && !validStdNum
+                ? "instructions"
+                : "instructions-offscreen"
+            }
+          >
+            <FontAwesomeIcon
+              icon={icon({ name: "info-circle" })}
+              className="icon info-icon"
+            />
+            Please enter a valid student number, with format{" "}
+            <code>XXXX-XXXXX (ex.2021-12345)</code>
           </p>
           <TextField
             type="password"
@@ -164,21 +186,35 @@ export default function SignUp() {
             onChange={(e) => setPwd(e.target.value)}
             onFocus={() => setPwdFocus(true)}
             onBlur={() => setPwdFocus(false)}
-            sx = {{
-              '& .MuiFormLabel-root': {
-                  fontFamily: 'Poppins',
+            sx={{
+              "& .MuiFormLabel-root": {
+                fontFamily: "Poppins",
               },
-              '& .MuiFormLabel-asterisk': {
-                fontSize: "16px"
-              }
+              "& .MuiFormLabel-asterisk": {
+                fontSize: "16px",
+              },
             }}
           />
-          <p id="pwdnote" className={pwdFocus && pwd && !validPwd ? 'instructions' : 'instructions-offscreen'}>
-            <FontAwesomeIcon icon={icon({name: 'info-circle'})} className="icon info-icon" />
-            8 to 24 characters.<br />
-            At least one uppercase letter.<br />
-            At least one lowercase letter.<br />
-            At least one special character.<br />
+          <p
+            id="pwdnote"
+            className={
+              pwdFocus && pwd && !validPwd
+                ? "instructions"
+                : "instructions-offscreen"
+            }
+          >
+            <FontAwesomeIcon
+              icon={icon({ name: "info-circle" })}
+              className="icon info-icon"
+            />
+            8 to 24 characters.
+            <br />
+            At least one uppercase letter.
+            <br />
+            At least one lowercase letter.
+            <br />
+            At least one special character.
+            <br />
           </p>
           <Button
             variant="contained"
