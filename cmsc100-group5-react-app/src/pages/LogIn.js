@@ -58,7 +58,8 @@ export default function LogIn() {
         }
         else { 
           const err = body.errorMsg
-          alert("Log in failed: " + err)
+          // alert("Log in failed: " + err)
+          setErrSubmit(`Log in failed: ${err}`)
         }
       })
   }
@@ -77,6 +78,8 @@ export default function LogIn() {
   const [errMsg, setErrMsg] = useState('');
   const [success, setSuccess] = useState(false);
 
+  const [errSubmit, setErrSubmit] = useState('');
+
   useEffect(() => {
     userRef.current.focus();
   }, [])
@@ -94,6 +97,10 @@ export default function LogIn() {
   useEffect(() => {
     setErrMsg('');
   }, [pwd])
+
+  // useEffect(() => {
+  //   setErrSubmit('');
+  // }, [])
 
   return (
     <div className="holder login-holder">
@@ -156,6 +163,11 @@ export default function LogIn() {
                 At least one uppercase letter.<br />
                 At least one lowercase letter.<br />
                 At least one special character.<br />
+            </p>
+            {/*Error upon submit */}
+            <p id="pwdnote" className={errSubmit ? 'instructions' : 'instructions-offscreen'}>
+                <FontAwesomeIcon icon={icon({name: 'info-circle'})} className="icon info-icon" />
+                {errSubmit}
             </p>
             <Button
                 type="submit"
