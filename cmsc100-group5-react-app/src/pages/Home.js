@@ -10,7 +10,7 @@ import { Link, useNavigate, useLoaderData } from "react-router-dom";
 
 import StudentHeader from "../components/StudentHeader";
 
-export default function Home() {
+export default function Home(props) {
  //authentication
  const username = localStorage.getItem("username")
  const [isLoggedIn, setIsLoggedIn] = useState(useLoaderData())
@@ -21,15 +21,6 @@ export default function Home() {
      navigate("/")
    }
  }, [isLoggedIn, navigate])
-
- function logout() {
-  const cookies = new Cookies();
-  cookies.remove("authToken");
-
-  localStorage.removeItem("username");
-  localStorage.removeItem("upmail")
-  setIsLoggedIn(false)
- }
 
   const [currentStep, updateCurrentStep] = useState(1);
 
@@ -92,7 +83,7 @@ export default function Home() {
 
   return (
     <div className="homepage">
-      {isLoggedIn && <StudentHeader onClick={logout}/>}
+      {isLoggedIn && <StudentHeader onClick={props.onClick}/>}
       <h1 className="heading">Welcome, { username }!</h1>
       <div className="stepper-holder">
         <Stepper steps={steps} />

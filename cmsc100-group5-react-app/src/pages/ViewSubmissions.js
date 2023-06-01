@@ -62,7 +62,7 @@ export default function ViewSubmissions(props) {
 
     return (
       <div className="viewsub">
-        {<StudentHeader onClick={props.props}/>}
+        {<StudentHeader onClick={props.onClick}/>}
         <h1 className="heading">View Clearance Applications</h1>
         <div className="table">
           <DataGrid

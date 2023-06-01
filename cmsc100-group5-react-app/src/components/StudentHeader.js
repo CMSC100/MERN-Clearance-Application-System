@@ -1,13 +1,32 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { Button } from '@mui/material';
-import { Outlet, Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Cookies from 'universal-cookie';
+import { Link, useNavigate, useLoaderData } from "react-router-dom";
 
 export default function StudentHeader(props) {
 
   const [open, setOpen] = useState(false);
 
+  const username = localStorage.getItem("username")
+  const [isLoggedIn, setIsLoggedIn] = useState(useLoaderData())
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/")
+    }
+  }, [isLoggedIn, navigate])
+
+  function logout() {
+    const cookies = new Cookies();
+    cookies.remove("authToken");
+
+    localStorage.removeItem("username");
+
+    setIsLoggedIn(false)
+  }
 
   return (
     <>
@@ -25,7 +44,7 @@ export default function StudentHeader(props) {
               <li><Link to={`/profile`} className='dropdown-item'>View Profile</Link></li>
             </ul>
             <ul>
-              <li><a className='dropdown-item' onClick={props.onClick}>Log Out</a></li>
+              <li><a className='dropdown-item' onClick={logout}>Log Out</a></li>
             </ul>
           </div>
         </div>
