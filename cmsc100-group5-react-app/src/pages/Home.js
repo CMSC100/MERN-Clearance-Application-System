@@ -11,18 +11,41 @@ import { Link, useNavigate, useLoaderData } from "react-router-dom";
 import StudentHeader from "../components/StudentHeader";
 
 export default function Home(props) {
- //authentication
- const username = localStorage.getItem("username")
- const [isLoggedIn, setIsLoggedIn] = useState(useLoaderData())
- const navigate = useNavigate()
+  //authentication
+  const username = localStorage.getItem("username")
+  const [isLoggedIn, setIsLoggedIn] = useState(useLoaderData())
+  const navigate = useNavigate()
 
- useEffect(() => {
-   if (!isLoggedIn) {
-     navigate("/")
-   }
- }, [isLoggedIn, navigate])
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/")
+    }
+  }, [isLoggedIn, navigate])
+
+  function submitApplication(){
+    fetch("http://localhost:3001/add-application",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          upmail: localStorage.getItem("upmail"),
+          submission_remark: submissionRemark
+        })
+      })
+      .then(response => response.json())
+      .then(body => {
+        if (body.success) {
+          alert("Successfully added application")
+        }
+        else { alert("Application failed")}
+      })
+  }
 
   const [currentStep, updateCurrentStep] = useState(1);
+
+  const [submissionRemark, setSubmissionRemark] = useState('')
 
   const steps = [
     {
@@ -33,9 +56,12 @@ export default function Home(props) {
         variant="outlined"
         size="normal"
         required
+        onChange={
+          (e) => setSubmissionRemark(e.target.value)
+        }
         InputProps={{endAdornment: (
           <InputAdornment position="end">
-            <IconButton aria-label="arrow-right">
+            <IconButton aria-label="arrow-right" onClick={submitApplication}>
               <ArrowCircleRightIcon sx={{color:"#001D3D", fontSize:35}} disabled={currentStep !== 0} />
             </IconButton>
           </InputAdornment>

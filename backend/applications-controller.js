@@ -7,7 +7,7 @@ const addNewApplication = async (req, res) => {
   try {
     const {upmail, submission_remark} = req.body
 
-    const newapplication = new Application({
+    const newApplication = new Application({
       status: "pending",
       step: 1,
       remarks: [],
@@ -18,12 +18,23 @@ const addNewApplication = async (req, res) => {
       }
     })
 
-    const user = await User.findOne({email: upmail})
-    user.applications.push(newapplication)
-    user.save();
+    // const user = await User.findOne({email: upmail})
+    // user.applications.push(newapplication)
+    // user.save();
 
+    const result = await newApplication.save()
+    const updatedUser = await User.findOneAndUpdate(
+      {email: upmail},
+      {$push: {applications: result._id}},
+      {new: true})
 
-    return res.send({success: true })
+    if (result._id) {
+      res.send({ success: true })
+    } else {
+      res.send({ success: false })
+    }
+
+    // return res.send({success: true })
   } catch (error) {
     return res.send({success: false})
   }
@@ -31,7 +42,9 @@ const addNewApplication = async (req, res) => {
 
 const getAllApplicationsByUser = async (req, res) =>{
   //req: { upmail }
-  const userApplications = await User.findOne({email: req.query.upmail})
+  const userApplicationsRef = await User.findOne({email: req.query.upmail}).select("applications")
+  const userApplications = await Application.find({_id: {$in: userApplicationsRef.applications } })
+  console.log(userApplications)
   res.send(userApplications)
 }
 
