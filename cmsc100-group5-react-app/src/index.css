@@ -8,6 +8,8 @@ body, html {
   background-image: url('../public/images/bg_1.png');
   background-size: 100%;
   background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
 }
 
 code {
@@ -77,7 +79,7 @@ li {
   background-color: white;
   height: 601px;
   border-radius: 30px;
-  box-shadow: 4px 4px 4px gray;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.26);
   padding: 20px;
 }
 
@@ -196,9 +198,124 @@ li {
 
 .data-table {
   width: 100%;
+  background-color: white;
 }
+
 
 .MuiToolbar-root {
   font-family: 'Poppins';
-  color: white
+  color: #001D3D;
+}
+
+/*--dropdown--*/
+:root {
+  --primary-bg: #003566;
+  --secondary-bg: #fff;
+  --primary-text-color: #fff;
+  --secondary-text-color: #001D3D;
+  --speed: 500ms;
+}
+
+ul {
+  list-style: none;
+}
+
+.menu-trigger {
+  cursor: pointer;
+}
+
+.dropdown-item {
+  text-decoration: none;
+  color: var(--secondary-text-color);
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  font-weight: 800;
+}
+
+.dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  background-color: var(--secondary-bg);
+  border-radius: 5px;
+  padding: 5px;
+  width: 120px;
+  top: 75px;
+  right: 337px;
+}
+
+.dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  right: 15px;
+  height: 10px;
+  width: 10px;
+  background: var(--secondary-bg);
+  transform: rotate(45deg);
+}
+
+.dropdown-menu.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: var(--speed) ease;
+}
+
+.dropdown-menu.inactive {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: var(--speed) ease;
+}
+
+/*--profile--*/
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  height: auto;
+  width: 500px;
+}
+
+.heading.profile {
+  color: var(--secondary-text-color);
+}
+
+.divider {
+  height: 20px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.info {
+  display: flex;
+  font-size: 20px;
+  margin: 0px;
+  justify-content: space-between;
+  align-items: center;
+  color: grey;
+  font-size: 16px;
+}
+
+.info-content {
+  font-size: 20px;
+  color: var(--secondary-text-color);
+  margin-left: 80px;
+  justify-self: end;
+}
+
+.profile-user {
+  height: 100px;
+  width: auto;
+  padding-bottom: 30px;
+  color: var(--secondary-text-color);
 }

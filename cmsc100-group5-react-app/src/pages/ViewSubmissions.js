@@ -3,6 +3,7 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
 import DownloadIcon from '@mui/icons-material/Download';
 import { IconButton } from '@mui/material';
+import StudentHeader from '../components/StudentHeader';
 
 const columns = [
   {
@@ -41,7 +42,7 @@ const columns = [
     width: 150,
     renderCell: (params) => (
       <IconButton aria-label="download">
-        <DownloadIcon sx={{color:"white"}} />
+        <DownloadIcon sx={{color:"#001D3D"}} />
       </IconButton>
     )
   }
@@ -57,10 +58,11 @@ const rows = [
   }
 ]
 
-export default function ViewSubmissions() {
+export default function ViewSubmissions(props) {
 
     return (
       <div className="viewsub">
+        {<StudentHeader onClick={props.props}/>}
         <h1 className="heading">View Clearance Applications</h1>
         <div className="table">
           <DataGrid
@@ -68,16 +70,24 @@ export default function ViewSubmissions() {
             sx={{
               fontFamily: 'Poppins',
               fontSize: '16px',
-              color:"white",
+              color:"#001D3D;",
               '& .MuiToolbar-root *': {
-                fontFamily: 'Poppins'
+                fontFamily: 'Poppins',
               },
-              '& .MuiDataGrid-columnHeadersInner *': {
+              '& .MuiDataGrid-columnHeaders': {
                 backgroundColor: "#001D3D",
+                color: "white",
+                fontWeight: "bold",
               },
-              '& .MuiDataGrid-iconButtonContainer': {
-                color:"white",
-              }
+              '& .MuiDataGrid-sortIcon': {
+                color: "white",
+              },
+              '& .MuiDataGrid-menuIconButton': {
+                color: "white",
+              },
+              '.MuiDataGrid-columnSeparator': {
+                display: 'none',
+              },
             }}
             rows={rows}
             columns={columns}

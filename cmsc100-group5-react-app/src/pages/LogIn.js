@@ -68,7 +68,7 @@ export default function LogIn() {
   const errRef = useRef();
 
   const [pwd, setPwd] = useState('');
-  const [validPwd, setValidPwd] = useState(false);
+  // const [validPwd, setValidPwd] = useState(false);
   const [pwdFocus, setPwdFocus] = useState(false);
 
   const [upmail, setUpMail] = useState('');
@@ -83,11 +83,6 @@ export default function LogIn() {
   useEffect(() => {
     userRef.current.focus();
   }, [])
-
-  useEffect(() => {
-    const res = PWD_REGEX.test(pwd);
-    setValidPwd(res);
-  }, [pwd])
 
   useEffect(() => {
     const res = EMAIL_REGEX.test(upmail);
@@ -143,7 +138,6 @@ export default function LogIn() {
                 size="small"
                 className="input-rounded password"
                 required
-                aria-invalid={validPwd ? "false" : "true"}
                 aria-describedby="pwdnote"
                 onChange={(e) => setPwd(e.target.value)}
                 onFocus={() => setPwdFocus(true)}
@@ -157,13 +151,6 @@ export default function LogIn() {
                     }
                 }}
             />
-            <p id="pwdnote" className={pwdFocus && pwd && !validPwd ? 'instructions' : 'instructions-offscreen'}>
-                <FontAwesomeIcon icon={icon({name: 'info-circle'})} className="icon info-icon" />
-                8 to 24 characters.<br />
-                At least one uppercase letter.<br />
-                At least one lowercase letter.<br />
-                At least one special character.<br />
-            </p>
             {/*Error upon submit */}
             <p id="pwdnote" className={errSubmit ? 'instructions' : 'instructions-offscreen'}>
                 <FontAwesomeIcon icon={icon({name: 'info-circle'})} className="icon info-icon" />
@@ -181,7 +168,6 @@ export default function LogIn() {
                   fontFamily: 'Poppins'
                 }
                 }}
-                disabled={!validPwd ? true : false}
             >
                 Log In
             </Button>
