@@ -50,17 +50,22 @@ const login = async (req, res) => {
 
   //  Scenario 1: FAIL - User doesn't exist
   if (!user) {
-    return res.send({ success: false })
+    return res.send({ success: false, errorMsg: "User doesnt exist" })
   }
 
   // Check if password is correct using the Schema method defined in User Schema
    user.comparePassword(password, (err, isMatch) => {
     if (err || !isMatch) {
       // Scenario 2: FAIL - Wrong password
-      return res.send({ success: false });
+      return res.send({ success: false, errorMsg: "Wrong Password!"});
     }
 
-    // Scenario 3: SUCCESS - time to create a token
+    // Scenario 3: FAIL - if user is not yet approved by the system
+    if(!user.isApproved){
+      return res.send({ success: false, errorMsg: "Account not yet approved."});
+    }
+
+    // Scenario 4: SUCCESS - time to create a token
     const tokenPayload = {
       _id: user._id
     }

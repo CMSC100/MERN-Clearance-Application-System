@@ -56,7 +56,10 @@ export default function LogIn() {
           localStorage.setItem("username", body.username);
           localStorage.setItem("upmail", body.upmail)
         }
-        else { alert("Log in failed")}
+        else { 
+          const err = body.errorMsg
+          alert("Log in failed: " + err)
+        }
       })
   }
 
