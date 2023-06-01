@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser"
 import mongoose from "mongoose"
 
 import "./models/user.js";
+import "./models/application.js"
 import setUpRoutes from "./routes.js";
 
 //connect to mongoose

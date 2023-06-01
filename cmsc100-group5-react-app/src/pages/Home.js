@@ -23,12 +23,12 @@ export default function Home() {
  }, [isLoggedIn, navigate])
 
  function logout() {
-   const cookies = new Cookies();
-   cookies.remove("authToken");
+  const cookies = new Cookies();
+  cookies.remove("authToken");
 
-   localStorage.removeItem("username");
-
-   setIsLoggedIn(false)
+  localStorage.removeItem("username");
+  localStorage.removeItem("upmail")
+  setIsLoggedIn(false)
  }
 
   const [currentStep, updateCurrentStep] = useState(1);

@@ -16,4 +16,4 @@ const ApplicationSchema = new mongoose.Schema({
     }
 })
 
-mongoose.model("application", ApplicationSchema)
+mongoose.model("Application", ApplicationSchema)
