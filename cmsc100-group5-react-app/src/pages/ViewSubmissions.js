@@ -5,6 +5,9 @@ import Button from "@mui/material/Button";
 import DownloadIcon from '@mui/icons-material/Download';
 import { IconButton } from '@mui/material';
 
+import StudentHeader from '../components/StudentHeader';
+
+
 const columns = [
   {
     field: 'id',
