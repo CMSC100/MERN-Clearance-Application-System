@@ -53,7 +53,8 @@ export default function LogIn() {
               sameSite: false
             });
 
-          localStorage.setItem("username", body.fname);
+          localStorage.setItem("username", body.username);
+          localStorage.setItem("upmail", body.upmail)
         }
         else { alert("Log in failed")}
       })
