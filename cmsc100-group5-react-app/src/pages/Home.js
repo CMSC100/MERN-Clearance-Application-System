@@ -1,13 +1,36 @@
 import Stepper from "../components/Stepper";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import Button from "@mui/material/Button";
 import DownloadIcon from '@mui/icons-material/Download';
 
+import Cookies from 'universal-cookie';
+import { Link, useNavigate, useLoaderData } from "react-router-dom";
+
 export default function Home(prop) {
+ //authentication
+ const username = localStorage.getItem("username")
+ const [isLoggedIn, setIsLoggedIn] = useState(useLoaderData())
+ const navigate = useNavigate()
+
+ useEffect(() => {
+   if (!isLoggedIn) {
+     navigate("/")
+   }
+ }, [isLoggedIn, navigate])
+
+ function logout() {
+   const cookies = new Cookies();
+   cookies.remove("authToken");
+
+   localStorage.removeItem("username");
+
+   setIsLoggedIn(false)
+ }
+
+
   const user = prop.name;
-  
   const [currentStep, updateCurrentStep] = useState(1);
 
   const steps = [

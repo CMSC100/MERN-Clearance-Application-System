@@ -2,6 +2,9 @@ import express from "express"
 import cookieParser from "cookie-parser"
 import mongoose from "mongoose"
 
+import "./models/user.js";
+import setUpRoutes from "./routes.js";
+
 //connect to mongoose
 await mongoose.connect("mongodb://127.0.0.1:27017/cmsc100-project")
   .catch((err) => {console.log(err)})
@@ -21,7 +24,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// setUpRoutes(app);
+setUpRoutes(app);
 
 // start server
 app.listen(3001, () => { console.log("API listening to port 3001 ")});

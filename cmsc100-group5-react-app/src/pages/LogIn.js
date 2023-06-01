@@ -1,14 +1,64 @@
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
+import Cookies from 'universal-cookie';
+
 const EMAIL_REGEX = /^[a-z0-9]+@up\.edu\.ph$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,24}$/;
 
-export default function SignUp() {
+export default function LogIn() {
+  //authetication
+  const navigate = useNavigate()
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // redirect when login is successful
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/home")
+    }
+  }, [isLoggedIn, navigate])
+
+  function logIn(e) {
+    e.preventDefault();
+
+    // form validation goes here
+
+    fetch("http://localhost:3001/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: upmail,
+          password: pwd
+        })
+      })
+      .then(response => response.json())
+      .then(body => {
+        if (body.success) {
+          setIsLoggedIn(true)
+          // successful log in. store the token as a cookie
+          const cookies = new Cookies()
+          cookies.set(
+            "authToken",
+            body.token,
+            {
+              path: "localhost:3001/",
+              age: 60*60,
+              sameSite: false
+            });
+
+          localStorage.setItem("username", body.fname);
+        }
+        else { alert("Log in failed")}
+      })
+  }
+
   const userRef = useRef();
   const errRef = useRef();
 
@@ -48,7 +98,7 @@ export default function SignUp() {
             <h1 className="heading" id="login">
             Log In
             </h1>
-            <form className="input-holder">
+            <form className="input-holder" onSubmit={logIn}>
             <TextField
                 label="UP Mail"
                 type="email"
@@ -104,6 +154,7 @@ export default function SignUp() {
                 At least one special character.<br />
             </p>
             <Button
+                type="submit"
                 variant="contained"
                 sx={{
                 bgcolor: "#001D3D",

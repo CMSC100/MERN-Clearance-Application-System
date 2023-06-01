@@ -2,9 +2,18 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  password: { type: String, required: true }
+  fname: {type: String, required: true},
+  mname: {type: String, required: false},
+  lname: {type: String, required: true},
+  studentno: {type: String, required: true},
+  userType: {type: String, enum: ["student", "approver", "admin"], required: true},
+  email: {type: String, required: true},
+  password: {type: String, required: true},
+  applications: [
+      {type: mongoose.Schema.Types.ObjectId, ref: "application"}
+  ],
+  adviser: {type: mongoose.Schema.Types.ObjectId, ref: "user"},
+  isApproved: {type: Boolean, required: true}
 })
 
 UserSchema.pre("save", function(next) {

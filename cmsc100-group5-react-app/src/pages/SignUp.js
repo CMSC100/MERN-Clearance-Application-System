@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
@@ -11,8 +11,56 @@ const STDNUM_REGEX = /^(19[0-9]{2}|20[0-2][0-9])-\d{5}$/;
 const EMAIL_REGEX = /^[a-z0-9]+@up\.edu\.ph$/;
 
 export default function SignUp() {
+  //authentication
+  const navigate = useNavigate()
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  // redirect when login is successful
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/")
+    }
+  }, [isLoggedIn, navigate])
+
+  function signUpHandler(e) {
+    e.preventDefault();
+
+    // form validation goes here 
+    if(validPwd && validStdNum && validUpMail){
+      fetch("http://localhost:3001/signup",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          fname: fname,
+          mname: mname,
+          lname: lname,
+          email: upmail,
+          studentno: stdnum,
+          password: pwd,
+          isApproved: false
+        })
+      })
+      .then(response => response.json())
+      .then(body => {
+        if (body.success) {
+          alert("Successfully sign up!")
+        }
+        else { alert("Sign up failed")}
+      })
+    }
+    
+  }
+
+
   const userRef = useRef();
   const errRef = useRef();
+
+  const [fname, setFname] = useState("");
+  const [mname, setMname] = useState("");
+  const [lname, setLname] = useState("");
 
   const [pwd, setPwd] = useState("");
   const [validPwd, setValidPwd] = useState(false);
@@ -58,7 +106,7 @@ export default function SignUp() {
         <h1 className="heading" id="signup">
           Sign Up
         </h1>
-        <form className="input-holder">
+        <form className="input-holder" onSubmit={signUpHandler}>
           <TextField
             label="First Name"
             variant="outlined"
@@ -66,6 +114,7 @@ export default function SignUp() {
             className="input-rounded fname"
             required
             inputRef={userRef}
+            onChange={(e) => setFname(e.target.value)}
             sx={{
               "& .MuiFormLabel-root": {
                 fontFamily: "Poppins",
@@ -80,6 +129,7 @@ export default function SignUp() {
             variant="outlined"
             size="small"
             className="input-rounded mname"
+            onChange={(e) => setMname(e.target.value)}
             sx={{
               "& .MuiFormLabel-root": {
                 fontFamily: "Poppins",
@@ -95,6 +145,7 @@ export default function SignUp() {
             size="small"
             className="input-rounded lname"
             required
+            onChange={(e) => setLname(e.target.value)}
             sx={{
               "& .MuiFormLabel-root": {
                 fontFamily: "Poppins",
@@ -217,6 +268,7 @@ export default function SignUp() {
             <br />
           </p>
           <Button
+            type="submit"
             variant="contained"
             sx={{
               bgcolor: "#001D3D",
@@ -225,13 +277,13 @@ export default function SignUp() {
               margin: 0,
               marginTop: 2,
             }}
-            disabled={!validPwd ? true : false}
+            disabled={!validPwd && !validStdNum && !validUpMail ? true : false}
           >
             Sign Up
           </Button>
           <p className="existing">
             Have an existing account?{" "}
-            <Link to={`/login`} className="text login-text">
+            <Link to={`/`} className="text login-text">
               Log In
             </Link>
             .
