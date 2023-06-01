@@ -8,7 +8,9 @@ import DownloadIcon from '@mui/icons-material/Download';
 import Cookies from 'universal-cookie';
 import { Link, useNavigate, useLoaderData } from "react-router-dom";
 
-export default function Home(prop) {
+import StudentHeader from "../components/StudentHeader";
+
+export default function Home() {
  //authentication
  const username = localStorage.getItem("username")
  const [isLoggedIn, setIsLoggedIn] = useState(useLoaderData())
@@ -29,8 +31,6 @@ export default function Home(prop) {
    setIsLoggedIn(false)
  }
 
-
-  const user = prop.name;
   const [currentStep, updateCurrentStep] = useState(1);
 
   const steps = [
@@ -92,7 +92,8 @@ export default function Home(prop) {
 
   return (
     <div className="homepage">
-      <h1 className="heading">Welcome, { user }!</h1>
+      {isLoggedIn && <StudentHeader onClick={logout}/>}
+      <h1 className="heading">Welcome, { username }!</h1>
       <div className="stepper-holder">
         <Stepper steps={steps} />
       </div>
