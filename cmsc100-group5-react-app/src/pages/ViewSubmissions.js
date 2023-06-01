@@ -72,8 +72,8 @@ export default function ViewSubmissions(props) {
       .then(response => response.json())
       .then(body =>{
         //convert the data to something useful
-        console.log(JSON.stringify(body))
-        console.log(body)
+        // console.log(JSON.stringify(body))
+        // console.log(body)
         body.map((application)=>{
           console.log(application.student_submission.submission_remark)
           const newRow = {
