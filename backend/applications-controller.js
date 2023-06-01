@@ -31,8 +31,10 @@ const addNewApplication = async (req, res) => {
 
 const getAllApplicationsByUser = async (req, res) =>{
   //req: { upmail }
-  const currentUser = await User.find({email: upmail}).applications
-  res.send(currentUser)
+  const userApplications = await User.findOne({email: req.query.upmail})
+  res.send(userApplications)
 }
+
+
 
 export { addNewApplication, getAllApplicationsByUser } 

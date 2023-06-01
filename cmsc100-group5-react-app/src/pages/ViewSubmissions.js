@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
 import DownloadIcon from '@mui/icons-material/Download';
 import { IconButton } from '@mui/material';
-import StudentHeader from '../components/StudentHeader';
 
 const columns = [
   {
@@ -48,17 +48,28 @@ const columns = [
   }
 ]
 
-const rows = [
-  {
-    id: 1,
-    link: "http://localhost:3000/view-submissions",
-    status: "In progress",
-    datecreated: "04-01-2023",
-    dateapproved: "05-01-2023",
-  }
-]
+// const rows = [
+//   {
+//     id: 1,
+//     link: "http://localhost:3000/view-submissions",
+//     status: "In progress",
+//     datecreated: "04-01-2023",
+//     dateapproved: "05-01-2023",
+//   }
+// ]
+
 
 export default function ViewSubmissions(props) {
+  const [rows, setRows] = useState([])
+
+  useEffect(()=>{
+    fetch(`http://localhost:3001/get-applications-by-user?upmail=${localStorage.getItem("upmail")}`)
+      .then(response => response.json())
+      .then(body =>{
+        console.log(JSON.stringify(body))
+        setRows(body)
+      })
+  },[rows])
 
     return (
       <div className="viewsub">
