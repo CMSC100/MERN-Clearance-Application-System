@@ -50,17 +50,22 @@ const login = async (req, res) => {
 
   //  Scenario 1: FAIL - User doesn't exist
   if (!user) {
-    return res.send({ success: false })
+    return res.send({ success: false, errorMsg: "User doesnt exist" })
   }
 
   // Check if password is correct using the Schema method defined in User Schema
    user.comparePassword(password, (err, isMatch) => {
     if (err || !isMatch) {
       // Scenario 2: FAIL - Wrong password
-      return res.send({ success: false });
+      return res.send({ success: false, errorMsg: "Wrong Password!"});
     }
 
-    // Scenario 3: SUCCESS - time to create a token
+    // Scenario 3: FAIL - if user is not yet approved by the system
+    if(!user.isApproved){
+      return res.send({ success: false, errorMsg: "Account not yet approved."});
+    }
+
+    // Scenario 4: SUCCESS - time to create a token
     const tokenPayload = {
       _id: user._id
     }
@@ -68,7 +73,7 @@ const login = async (req, res) => {
     const token = jwt.sign(tokenPayload, "THIS_IS_A_SECRET_STRING");
 
     // return the token to the client
-    return res.send({ success: true, token, username: user.name });
+    return res.send({ success: true, token, username: user.fname, upmail: user.email });
 
 
   })
@@ -90,10 +95,10 @@ const checkIfLoggedIn = async (req, res) => {
 
     if (user) {
       // SUCCESS Scenario - User is found
-      return res.send({ isLoggedIn: true })
+      return res.send({ isLoggedIn: true, userType: user.userType})
     } else {
       // FAIL Scenario 2 - Token is valid but user id not found
-      return res.send({ isLoggedIn: false })
+      return res.send({ isLoggedIn: false})
     }
   } catch {
     // FAIL Scenario 3 - Error in validating token / Token is not valid

@@ -8,30 +8,44 @@ import DownloadIcon from '@mui/icons-material/Download';
 import Cookies from 'universal-cookie';
 import { Link, useNavigate, useLoaderData } from "react-router-dom";
 
-export default function Home(prop) {
- //authentication
- const username = localStorage.getItem("username")
- const [isLoggedIn, setIsLoggedIn] = useState(useLoaderData())
- const navigate = useNavigate()
+import StudentHeader from "../components/StudentHeader";
 
- useEffect(() => {
-   if (!isLoggedIn) {
-     navigate("/")
-   }
- }, [isLoggedIn, navigate])
+export default function Home(props) {
+  //authentication
+  const username = localStorage.getItem("username")
+  const [isLoggedIn, setIsLoggedIn] = useState(useLoaderData())
+  const navigate = useNavigate()
 
- function logout() {
-   const cookies = new Cookies();
-   cookies.remove("authToken");
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/")
+    }
+  }, [isLoggedIn, navigate])
 
-   localStorage.removeItem("username");
+  function submitApplication(){
+    fetch("http://localhost:3001/add-application",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          upmail: localStorage.getItem("upmail"),
+          submission_remark: submissionRemark
+        })
+      })
+      .then(response => response.json())
+      .then(body => {
+        if (body.success) {
+          alert("Successfully added application")
+        }
+        else { alert("Application failed")}
+      })
+  }
 
-   setIsLoggedIn(false)
- }
-
-
-  const user = prop.name;
   const [currentStep, updateCurrentStep] = useState(1);
+
+  const [submissionRemark, setSubmissionRemark] = useState('')
 
   const steps = [
     {
@@ -42,9 +56,12 @@ export default function Home(prop) {
         variant="outlined"
         size="normal"
         required
+        onChange={
+          (e) => setSubmissionRemark(e.target.value)
+        }
         InputProps={{endAdornment: (
           <InputAdornment position="end">
-            <IconButton aria-label="arrow-right">
+            <IconButton aria-label="arrow-right" onClick={submitApplication}>
               <ArrowCircleRightIcon sx={{color:"#001D3D", fontSize:35}} disabled={currentStep !== 0} />
             </IconButton>
           </InputAdornment>
@@ -92,7 +109,8 @@ export default function Home(prop) {
 
   return (
     <div className="homepage">
-      <h1 className="heading">Welcome, { user }!</h1>
+      {isLoggedIn && <StudentHeader onClick={props.onClick}/>}
+      <h1 className="heading">Welcome, { username }!</h1>
       <div className="stepper-holder">
         <Stepper steps={steps} />
       </div>

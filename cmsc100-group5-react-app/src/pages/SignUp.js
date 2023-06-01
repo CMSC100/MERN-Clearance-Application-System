@@ -106,7 +106,7 @@ export default function SignUp() {
         <h1 className="heading" id="signup">
           Sign Up
         </h1>
-        <form className="input-holder" onSubmit={signUpHandler}>
+        <form className="input-holder" onSubmit={signUpHandler} autoComplete="off">
           <TextField
             label="First Name"
             variant="outlined"
