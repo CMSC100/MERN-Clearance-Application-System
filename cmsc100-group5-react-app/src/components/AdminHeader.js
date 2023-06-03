@@ -33,7 +33,7 @@ export default function AdminHeader(props) {
       <nav>
         <ul>
           <li><Link to={`/`} className="link-styles">Home</Link></li>
-          <li><Link to={`/view-submissions-admin`} className="link-styles">View Clearance Applications</Link></li>
+          <li><Link to={`/manage-approvers`} className="link-styles">Manage Approver Accounts</Link></li>
         </ul>
         <div className="menu-container">
           <div className="menu-trigger" onClick={() => {setOpen(!open)}}>
