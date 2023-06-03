@@ -55,11 +55,24 @@ const getNotificationsByUser = async (req,res) =>{
   const allremarks = await Application.aggregate([
     {$match: {_id: {$in: userApplicationsRef.applications }}},
     {$unwind: '$remarks'},
-    {$project: {_id: 1, 'remarks.app_remark': 1, 'remarks.remark_date': 1, 'remarks.commenter': 1, 'remarks.step_given': 1}},
+    {$lookup : {
+      from : 'users',
+      localField : 'remarks.commenter',
+      foreignField : '_id',
+      as : 'commenteruser'
+    }},
+    {$project: {
+      _id: 1, 
+      'remarks.app_remarks': 1,
+      'remarks.remark_date': 1, 
+      'commenteruser.fname': 1,
+      'commenteruser.lname': 1, 
+      'remarks.step_given': 1, 
+      'student_submission.submission_remark': 1
+    }},
     {$sort: {'remarks.remark_date': 1}},
     {$limit: 10}
   ])
-  // .orderby().limit(10)
   console.log(allremarks)
   res.send(allremarks)
 }
