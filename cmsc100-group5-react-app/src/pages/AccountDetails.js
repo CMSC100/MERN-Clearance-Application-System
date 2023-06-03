@@ -47,7 +47,7 @@ export default function SubjectDetail() {
                 <div className="divider"></div>
                 <div className="user-info">
                     <FontAwesomeIcon icon={icon({name: 'user-circle'})} className="profile-user"/>
-                    <p className="info">Full Name:<span className="info-content"> {studentAcc.mname == "" ? studentAcc.fname + " " + studentAcc.lname : studentAcc.fname + " " + studentAcc.mname + " " + studentAcc.lname}</span></p>
+                    <p className="info">Full Name:<span className="info-content"> {studentAcc.mname === "" ? studentAcc.fname + " " + studentAcc.lname : studentAcc.fname + " " + studentAcc.mname + " " + studentAcc.lname}</span></p>
                     <p className="info">Student Number:<span className="info-content"> {studentAcc.studentno}</span></p>
                     <p className="info">Adviser:<span className="info-content"> {studentAcc.adviser}</span></p>
                     <p className="info">UP Mail:<span className="info-content"> {studentAcc.email}</span></p>
