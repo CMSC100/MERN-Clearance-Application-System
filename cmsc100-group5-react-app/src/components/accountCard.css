@@ -1,0 +1,65 @@
+/* .card-container{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid red;
+    width: 85%;
+    margin: auto;
+} */
+
+.account-title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: large;
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+
+.account-subtitle {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-wrap: break-word;
+}
+
+.account-title:hover {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: large;
+    text-decoration: none;
+    font-weight: bold;
+    color: blue;
+}
+
+.account-card {
+    background: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px;
+    box-shadow: 0px 10px 10px rgba(0,0,0,.2);
+    border-radius: 10px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.Btn-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px
+}
+
+.account-card-studentno{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: #001D3D;
+    padding: 30px;
+    width: 250px;
+    position: relative;
+}
+
+.account-card-name{
+    justify-content: left;
+    align-items: center;
+    padding: 30px;
+    position: relative;
+}

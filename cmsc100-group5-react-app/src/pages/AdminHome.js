@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate, useLoaderData } from "react-router-dom"
 import AdminHeader from "../components/AdminHeader"
+import AccountCard from "../components/AccountCard";
 
 import Cookies from 'universal-cookie';
 
@@ -29,12 +30,17 @@ export default function AdminHome() {
         setIsLoggedIn(false)
       }
 
+    function approveAcc() {
+
+    }
+
     return(
         <>
+        
         {isLoggedIn && <AdminHeader onClick={logout}/>}
-            <ul>
-                {accounts.map((account, i) => <li>{i+1} {account.fname} Is Approved? {account.isApproved.toString()}</li>)}
-            </ul>
+        <h2>Manage Student account applications</h2> 
+                {accounts.map((account, i) => <AccountCard num={i} account={account} onClick={approveAcc}></AccountCard>)}
+            
         </>
     )
 }
