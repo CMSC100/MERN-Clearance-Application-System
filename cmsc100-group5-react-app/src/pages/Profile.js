@@ -21,7 +21,7 @@ export default function Profile(props) {
                 <div className="divider"></div>
                 <div className="user-info">
                     <FontAwesomeIcon icon={icon({name: 'user-circle'})} className="profile-user"/>
-                    <p className="info">Full Name:<span className="info-content"> {user.mname === "" ? user.fname + " " + user.lname : user.fname + " " + user.mname + " " + user.lname}</span></p>
+                    <p className="info">Full Name:<span className="info-content"> {user.mname === "" || user.hasOwnProperty('mname') ? user.fname + " " + user.lname : user.fname + " " + user.mname + " " + user.lname}</span></p>
                     <p className="info">Student Number:<span className="info-content"> {user.studentno}</span></p>
                     <p className="info">Adviser:<span className="info-content"> {user.adviser}</span></p>
                     <p className="info">UP Mail:<span className="info-content"> {user.email}</span></p>
