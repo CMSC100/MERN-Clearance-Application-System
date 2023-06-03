@@ -17,9 +17,9 @@ export default function AccountCard(props) {
                     </Link>
                 </div>
                 <div className='Btn-div'>
-                    <Button className='approve-Btn' variant="contained" color="success" onClick={props.onClick}>Approve</Button>
+                    <Button className='approve-Btn' variant="contained" color="success" onClick={props.onApprove}>Approve</Button>
                     <br/>
-                    <Button className='reject-Btn' variant="contained" color="error" onClick={props.onClick} style={{marginLeft: 10, marginRight: 10}}>Reject</Button>
+                    <Button className='reject-Btn' variant="contained" color="error" onClick={props.onReject} style={{marginLeft: 10, marginRight: 10}}>Reject</Button>
                 </div>
             </div>
         </div>
