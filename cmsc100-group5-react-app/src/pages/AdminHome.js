@@ -30,16 +30,49 @@ export default function AdminHome() {
         setIsLoggedIn(false)
       }
 
-    function approveAcc() {
+      const approveAcc = (studno) => {
+        fetch("http://localhost:3001/approve-student-account", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ studentno: studno })
+        })
+          .then(response => response.text())
+          .then(body => {
+    
+            // check if Mongoose document was successfully edited/updated via the response returned
+            if(Object.values(body)[0] ? "true" : "false" == "true") {
+              setAccounts(accounts.filter(items=>items.studentno!==studno))
+            }
+          })
+        }
 
-    }
+        const rejectAcc = (studno) => {
+            fetch("http://localhost:3001/reject-student-account", {
+              method: "POST",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ studentno: studno })
+            })
+              .then(response => response.text())
+              .then(body => {
+        
+                // when student account request is rejected, the user must then be deleted in the database
+                // check if Mongoose document was successfully deleted via the response returned
+                if(Object.values(body)[0] ? "true" : "false" == "true") {
+                    setAccounts(accounts.filter(items=>items.studentno!==studno))
+                }
+              })
+            }
 
     return(
         <>
         
         {isLoggedIn && <AdminHeader onClick={logout}/>}
         <h2>Manage Student account applications</h2> 
-                {accounts.map((account, i) => <AccountCard num={i} account={account} onClick={approveAcc}></AccountCard>)}
+                {accounts.map((account, i) => <AccountCard num={i} account={account} onApprove={() => { approveAcc(account.studentno)}} onReject={() => { rejectAcc(account.studentno)}}></AccountCard>)}
             
         </>
     )

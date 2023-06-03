@@ -18,4 +18,31 @@ const getStudentAccountByStudno = async (req, res) => {
 	res.send(account)
 }
 
-export {getUser, getStudentAccounts, getStudentAccountByStudno}
+// approve student account request (done by admin), update isApproved field of user in db
+const approveAccount = async (req, res) => {
+	const { studentno } = req.body
+
+	const result = await User.updateOne({ studentno }, {$set: {isApproved: true}})
+
+	if (result.modifiedCount == 1) {
+		res.send({ success: true })
+	} else { 
+		res.send({ success: false })
+	}
+}
+
+// when student account request is rejected by admin, the account must then be deleted in the db
+const rejectAccount = async (req, res) => {
+	const { studentno } = req.body
+
+	const result = await User.deleteOne({ studentno })
+
+	if (result.deletedCount == 1) {
+		res.send({ success: true })
+	} else { 
+		res.send({ success: false })
+	}
+	
+}
+
+export {getUser, getStudentAccounts, getStudentAccountByStudno, approveAccount, rejectAccount}

@@ -1,5 +1,5 @@
 import { signUp, login, checkIfLoggedIn } from "./auth-controller.js";
-import { getUser, getStudentAccounts, getStudentAccountByStudno } from "./account-controller.js";
+import { getUser, getStudentAccounts, getStudentAccountByStudno, approveAccount, rejectAccount } from "./account-controller.js";
 import { getAllApplicationsByUser, addNewApplication, getNotificationsByUser } from "./applications-controller.js";
 
 const setUpRoutes = (app) => {
@@ -12,6 +12,8 @@ const setUpRoutes = (app) => {
   app.get("/get-applications-by-user", getAllApplicationsByUser)
   app.post("/add-application", addNewApplication)
   app.get("/get-student-account-by-studno", getStudentAccountByStudno)
+  app.post("/approve-student-account", approveAccount);
+  app.post("/reject-student-account", rejectAccount);
   app.get("/get-notifications-by-user", getNotificationsByUser)
 }
 
