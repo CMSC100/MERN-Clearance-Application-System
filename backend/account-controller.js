@@ -8,8 +8,14 @@ const getUser = async (req, res) => {
 }
 
 const getStudentAccounts = async (req, res) => {
-    const accounts = await User.find({}).where("userType").equals("student")
+    const accounts = await User.find({userType: "student", isApproved: false})
     res.send(accounts)
 }
 
-export {getUser, getStudentAccounts}
+// get student account by student number
+const getStudentAccountByStudno = async (req, res) => {
+	const account = await User.findOne({ userType: "student" , studentno: req.query.studentno })
+	res.send(account)
+}
+
+export {getUser, getStudentAccounts, getStudentAccountByStudno}

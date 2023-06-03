@@ -1,5 +1,5 @@
 import { signUp, login, checkIfLoggedIn } from "./auth-controller.js";
-import { getUser, getStudentAccounts } from "./account-controller.js";
+import { getUser, getStudentAccounts, getStudentAccountByStudno } from "./account-controller.js";
 import { getAllApplicationsByUser, addNewApplication } from "./applications-controller.js";
 
 const setUpRoutes = (app) => {
@@ -11,6 +11,7 @@ const setUpRoutes = (app) => {
   app.get("/get-student-accounts", getStudentAccounts)
   app.get("/get-applications-by-user", getAllApplicationsByUser)
   app.post("/add-application", addNewApplication)
+  app.get("/get-student-account-by-studno", getStudentAccountByStudno)
 }
 
 export default setUpRoutes;

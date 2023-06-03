@@ -11,6 +11,7 @@ import SignUp from "./pages/SignUp";
 import LogIn from "./pages/LogIn";
 import Profile from "./pages/Profile";
 import AdminHome from "./pages/AdminHome";
+import AccountDetails from "./pages/AccountDetails";
 
 // Send a POST request to API to check if the user is logged in. Redirect the user to /home if already logged in
 const checkIfLoggedInOnLogIn = async () => {
@@ -93,6 +94,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/home", element: <Home />, loader: checkIfLoggedInOnDash},
       { path: "/admin-home", element: <AdminHome />, loader: checkIfLoggedInAsAdmin},
+      { path: "/admin-home/:studentno", element: <AccountDetails />, loader: checkIfLoggedInAsAdmin},
       { path: "/view-submissions", element: <ViewSubmissions />, loader: checkIfLoggedInOnDash },
       { path: "/profile", element: <Profile />, loader: checkIfLoggedInOnDash},
       { path: "/signup", element: <SignUp />, loader: checkIfLoggedInOnLogIn },
