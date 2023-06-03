@@ -44,10 +44,24 @@ const getAllApplicationsByUser = async (req, res) =>{
   //req: { upmail }
   const userApplicationsRef = await User.findOne({email: req.query.upmail}).select("applications")
   const userApplications = await Application.find({_id: {$in: userApplicationsRef.applications } })
-  console.log(userApplications)
+  // console.log(userApplications)
   res.send(userApplications)
 }
 
+const getNotificationsByUser = async (req,res) =>{
+  //req: { upmail }
+  const userApplicationsRef =  await User.findOne({email: req.query.upmail}).select("applications")
+  // const userNotifs = await Application.find({_id: {$in: userApplicationsRef.applications }})
+  const allremarks = await Application.aggregate([
+    {$match: {_id: {$in: userApplicationsRef.applications }}},
+    {$unwind: '$remarks'},
+    {$project: {_id: 1, 'remarks.app_remark': 1, 'remarks.remark_date': 1, 'remarks.commenter': 1, 'remarks.step_given': 1}},
+    {$sort: {'remarks.remark_date': 1}},
+    {$limit: 10}
+  ])
+  // .orderby().limit(10)
+  console.log(allremarks)
+  res.send(allremarks)
+}
 
-
-export { addNewApplication, getAllApplicationsByUser } 
+export { addNewApplication, getAllApplicationsByUser, getNotificationsByUser } 
