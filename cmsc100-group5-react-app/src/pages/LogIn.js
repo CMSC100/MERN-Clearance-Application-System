@@ -55,6 +55,7 @@ export default function LogIn() {
 
           localStorage.setItem("username", body.username);
           localStorage.setItem("upmail", body.upmail)
+          localStorage.setItem("userType", body.userType)
         }
         else { 
           const err = body.errorMsg

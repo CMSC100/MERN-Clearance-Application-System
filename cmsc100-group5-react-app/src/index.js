@@ -12,6 +12,9 @@ import LogIn from "./pages/LogIn";
 import Profile from "./pages/Profile";
 import AdminHome from "./pages/AdminHome";
 import AccountDetails from "./pages/AccountDetails";
+import ApproverHome from "./pages/ApproverHome";
+import AllRemarks from "./pages/ViewRemarks";
+import AllSubmissions from "./pages/ViewSubmissionLinks";
 
 // Send a POST request to API to check if the user is logged in. Redirect the user to /home if already logged in
 const checkIfLoggedInOnLogIn = async () => {
@@ -27,7 +30,7 @@ const checkIfLoggedInOnLogIn = async () => {
       if(payload.userType == "admin") {
         return redirect("/admin-home")
       }
-      else if(payload.userType == "approver") {
+      else if(payload.userType == "adviser" || payload.userType == "clearanceOfficer") {
         return redirect("/approver-home")
       }
       else {
@@ -80,7 +83,7 @@ const checkIfLoggedInAsApprover = async () => {
 
 
   const payload = await res.json();
-    if (payload.isLoggedIn && payload.userType == "approver") {
+    if (payload.isLoggedIn &&(payload.userType == "adviser" || payload.userType == "clearanceOfficer")) {
       return true
     } else {
       return redirect("/")
@@ -95,8 +98,11 @@ const router = createBrowserRouter([
       { path: "/home", element: <Home />, loader: checkIfLoggedInOnDash},
       { path: "/admin-home", element: <AdminHome />, loader: checkIfLoggedInAsAdmin},
       { path: "/admin-home/:studentno", element: <AccountDetails />, loader: checkIfLoggedInAsAdmin},
+      { path: "/approver-home", element: <ApproverHome/>, loader: checkIfLoggedInAsApprover},
+      { path: "/approver-view-remarks/:params", element: <AllRemarks/>, loader: checkIfLoggedInAsApprover},
+      { path: "/approver-view-submissions/:params", element: <AllSubmissions/>, loader: checkIfLoggedInAsApprover},
       { path: "/view-submissions", element: <ViewSubmissions />, loader: checkIfLoggedInOnDash },
-      { path: "/profile", element: <Profile />, loader: checkIfLoggedInOnDash},
+      { path: "/profile-student", element: <Profile />, loader: checkIfLoggedInOnDash},
       { path: "/signup", element: <SignUp />, loader: checkIfLoggedInOnLogIn },
       { path: "/", element: <LogIn />, loader: checkIfLoggedInOnLogIn },
     ],

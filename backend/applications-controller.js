@@ -7,15 +7,22 @@ const addNewApplication = async (req, res) => {
   try {
     const {upmail, submission_remark} = req.body
 
+    const user = await User.findOne({email: upmail})
+
+    const fullname = user.mname === "" ? `${user.fname} ${user.lname}` : `${user.fname} ${user.mname} ${user.lname}`
+
+
+
     const newApplication = new Application({
+      student_name: fullname,
       status: "pending",
       step: 1,
       remarks: [],
-      student_submission: {
+      student_submission: [{
         submission_remark: submission_remark,
         submission_date: new Date(Date.now()),
         step_given: 1
-      }
+      }]
     })
 
     // const user = await User.findOne({email: upmail})
@@ -77,4 +84,31 @@ const getNotificationsByUser = async (req,res) =>{
   res.send(allremarks)
 }
 
-export { addNewApplication, getAllApplicationsByUser, getNotificationsByUser } 
+const getAllApplicationsPending = async (req, res) => {
+  const userAllApplications = await Application.find({}).where("status").equals("pending")
+//   const userAllApplications = await Application.aggregate([
+//     {$match: {status: "pending"}},
+//     {$lookup: {
+//       from : 'users',
+//       localField: '_id',
+//       foreignField: {$in: 'applications'},
+//       as: 'userdata'
+//     }},
+//     {$project: {
+//       _id: 1, 
+//       'userdata.name': 1,
+//       status: 1,
+//       'student_submission.submission_date': 1
+//     }},
+//   ])
+//   res.send(userAllApplications)
+  res.send(userAllApplications)
+}
+
+const getApplicationById = async (req, res) => {
+  const userApplication = await Application.findOne({}).where("_id").equals(req.query.id)
+  res.send(userApplication)
+}
+
+
+export { addNewApplication, getAllApplicationsByUser, getNotificationsByUser, getAllApplicationsPending, getApplicationById } 

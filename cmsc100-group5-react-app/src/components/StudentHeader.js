@@ -92,10 +92,10 @@ export default function StudentHeader(props) {
           </div>
           <div className={`dropdown-menu menu-user ${open? 'active' : 'inactive'}`}>
             <ul>
-              <li><Link to={`/profile`} className='dropdown-item user-profile-item'>View Profile</Link></li>
+              <li><Link to={`/profile-student`} className='dropdown-item user-profile-item'>View Profile</Link></li>
             </ul>
             <ul>
-              <li><a className='dropdown-item' onClick={logout}>Log Out</a></li>
+              <li><a className='dropdown-item user-profile-item' onClick={logout}>Log Out</a></li>
             </ul>
           </div>
         </div>
