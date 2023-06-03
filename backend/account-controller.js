@@ -22,7 +22,9 @@ const getStudentAccountByStudno = async (req, res) => {
 const approveAccount = async (req, res) => {
 	const { studentno } = req.body
 
-	const result = await User.updateOne({ studentno }, {$set: {isApproved: true}})
+	console.log(studentno)
+
+	const result = await User.updateOne({ studentno }, {$set: {isApproved: true}}).where("userType").equals("student")
 
 	if (result.modifiedCount == 1) {
 		res.send({ success: true })
@@ -35,7 +37,7 @@ const approveAccount = async (req, res) => {
 const rejectAccount = async (req, res) => {
 	const { studentno } = req.body
 
-	const result = await User.deleteOne({ studentno })
+	const result = await User.deleteOne({ studentno }).where("userType").equals("student")
 
 	if (result.deletedCount == 1) {
 		res.send({ success: true })
