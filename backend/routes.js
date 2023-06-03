@@ -1,6 +1,6 @@
 import { signUp, login, checkIfLoggedIn } from "./auth-controller.js";
 import { getUser, getStudentAccounts, getStudentAccountByStudno } from "./account-controller.js";
-import { getAllApplicationsByUser, addNewApplication } from "./applications-controller.js";
+import { getAllApplicationsByUser, addNewApplication, getNotificationsByUser } from "./applications-controller.js";
 
 const setUpRoutes = (app) => {
   app.get("/", (req, res) => { res.send("API Home") });
@@ -12,6 +12,7 @@ const setUpRoutes = (app) => {
   app.get("/get-applications-by-user", getAllApplicationsByUser)
   app.post("/add-application", addNewApplication)
   app.get("/get-student-account-by-studno", getStudentAccountByStudno)
+  app.get("/get-notifications-by-user", getNotificationsByUser)
 }
 
 export default setUpRoutes;
