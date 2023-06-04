@@ -4,6 +4,8 @@ import { IconButton, InputAdornment, TextField } from "@mui/material";
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import Button from "@mui/material/Button";
 import DownloadIcon from '@mui/icons-material/Download';
+import PDFDocument from "../components/GeneratePDF";
+import { PDFDownloadLink } from "@react-pdf/renderer"
 
 import Cookies from 'universal-cookie';
 import { Link, useNavigate, useLoaderData } from "react-router-dom";
@@ -88,7 +90,21 @@ export default function Home(props) {
     },
     {
       title: "Download your approved clearance",
-      element: <Button sx={{
+      element: <PDFDownloadLink document={<PDFDocument/>} fileName="ClearanceForm">
+        {({loading}) => (loading ? <Button sx={{
+          bgcolor: "#001D3D",
+          borderRadius: 20,
+          fontFamily: 'Poppins',
+          fontSize: 16,
+          height: 60,
+          width: 200,
+          color: "white",
+        }}
+        variant="contained" startIcon={<DownloadIcon />} >
+        Loading document...
+        </Button> : 
+        
+        <Button sx={{
           bgcolor: "#001D3D",
           borderRadius: 20,
           fontFamily: 'Poppins',
@@ -97,9 +113,10 @@ export default function Home(props) {
           width: 200, // Adjust the width as per your preference
           color: "white",
         }}
-        variant="contained" startIcon={<DownloadIcon onClick={null} />} disabled={currentStep !== 3}>
+        variant="contained" startIcon={<DownloadIcon />} >
         Download PDF
-        </Button>
+        </Button>)}
+      </PDFDownloadLink>
     },
   ]
 
