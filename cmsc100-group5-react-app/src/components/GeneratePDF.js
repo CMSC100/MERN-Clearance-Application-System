@@ -12,6 +12,13 @@ export default function PDFDocument(props) {
     }, [])
 
     //details of adviser to be used when generating the PDF document
+    const [adviser, setAdviser] = useState([])
+    useEffect(() => {
+        fetch(`http://localhost:3001/get-adviser/?upmail=${localStorage.getItem("upmail")}`).then(response => response.json())
+        .then(body => {
+            setAdviser(body)
+        })
+    }, [])
 
     const styles = StyleSheet.create({
     body: {
@@ -35,7 +42,7 @@ export default function PDFDocument(props) {
         fontSize: 14,
         textAlign: "justify",
         fontFamily: "Times-Roman",
-        overflowWrap: "break-word",
+        whiteSpace: "nowrap",
     },
     divider: {
         marginTop: 10,
@@ -61,10 +68,10 @@ return (
             <View style={styles.divider}/>
             <Text style={styles.text}>{today}</Text>
             <Text style={styles.text}>
-                This document certifies that {user.fname} {user.mname} {user.lname}, {user.studentno} has satisfied the clearance requirements of the institute.
+                This document certifies that {user.mname === "" ? user.fname + " " + user.lname : user.fname + " " + user.mname + " " + user.lname}, {user.studentno} has satisfied the clearance requirements of the institute.
             </Text>
             <Text style={styles.text}>Verified:</Text>
-            <Text style={styles.text}>Academic Adviser: {user.adviser}</Text>
+            <Text style={styles.text}>Academic Adviser: {adviser.mname === "" ? adviser.fname + " " + adviser.lname : adviser.fname + " " + adviser.mname + " " + adviser.lname}</Text>
             <Text style={styles.text}>Clearance Officer: {user.clearanceOfficer}</Text>
 
         </Page>

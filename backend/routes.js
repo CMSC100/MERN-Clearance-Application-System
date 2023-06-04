@@ -1,5 +1,5 @@
 import { signUp, login, checkIfLoggedIn } from "./auth-controller.js";
-import { getUser, getStudentAccounts, getStudentAccountByStudno, approveAccount, rejectAccount } from "./account-controller.js";
+import { getUser, getStudentAccounts, getStudentAccountByStudno, approveAccount, rejectAccount, getAdviser } from "./account-controller.js";
 import { getAllApplicationsByUser, addNewApplication, getNotificationsByUser, getAllApplicationsPending, getApplicationById } from "./applications-controller.js";
 
 const setUpRoutes = (app) => {
@@ -17,6 +17,7 @@ const setUpRoutes = (app) => {
   app.get("/get-notifications-by-user", getNotificationsByUser)
   app.get("/get-all-applications-pending", getAllApplicationsPending)
   app.get("/get-application-by-id", getApplicationById)
+  app.get("/get-adviser", getAdviser)
 }
 
 export default setUpRoutes;

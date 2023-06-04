@@ -7,6 +7,12 @@ const getUser = async (req, res) => {
     res.send(user)
 }
 
+const getAdviser = async (req, res) => {
+    const user = await User.findOne({email: req.query.upmail})
+	const approver = await User.findOne({_id: user.adviser})
+    res.send(approver)
+}
+
 const getStudentAccounts = async (req, res) => {
     const accounts = await User.find({userType: "student", isApproved: false})
     res.send(accounts)
@@ -47,4 +53,4 @@ const rejectAccount = async (req, res) => {
 	
 }
 
-export {getUser, getStudentAccounts, getStudentAccountByStudno, approveAccount, rejectAccount}
+export {getUser, getStudentAccounts, getStudentAccountByStudno, approveAccount, rejectAccount, getAdviser}
