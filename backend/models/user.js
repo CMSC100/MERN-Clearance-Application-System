@@ -5,14 +5,14 @@ const UserSchema = new mongoose.Schema({
   fname: {type: String, required: true},
   mname: {type: String, required: false},
   lname: {type: String, required: true},
-  studentno: {type: String, required: true},
+  studentno: {type: String, required: false},
   userType: {type: String, enum: ["student", "adviser", "clearanceOfficer", "admin"], required: true},
   email: {type: String, required: true},
   password: {type: String, required: true},
   applications: [
-      {type: mongoose.Schema.Types.ObjectId, ref: "application"}
+      {type: mongoose.Schema.Types.ObjectId, ref: "Application"}
   ],
-  adviser: {type: mongoose.Schema.Types.ObjectId, ref: "user"},
+  adviser: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
   isApproved: {type: Boolean, required: true}
 })
 
