@@ -76,6 +76,10 @@ li {
   align-items: center;
 }
 
+.homepage {
+  padding-bottom: 20px;
+}
+
 .holder {
   display: flex;
   flex-direction: column;
@@ -197,10 +201,22 @@ li {
 
 /*--stepper--*/
 
+.step-holder {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .link-field {
   border-radius: 20px;
   width: 100%;
   z-index: 1
+}
+
+.github-field {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
 
 /*--view submissions--*/
@@ -269,7 +285,7 @@ ul {
   content: '';
   position: absolute;
   top: -5px;
-  right: 15px;
+  right: 17px;
   height: 10px;
   width: 10px;
   background: var(--secondary-bg);
@@ -277,6 +293,7 @@ ul {
 }
 
 /* notifications */
+
 .dropdown-item.notif-item {
   text-decoration: none;
   color: var(--secondary-text-color);
@@ -306,7 +323,7 @@ ul {
   content: '';
   position: absolute;
   top: -5px;
-  right:76px;
+  right: 82px;
   height: 10px;
   width: 10px;
   background: var(--secondary-bg);

@@ -98,6 +98,7 @@ const getLatestApplicationByUser = async (req,res)=>{
     {$sort: {'student_submission.submission_date': -1}},
     {$limit:1}
   ]);
+  console.log(latestApplication);
   res.send(latestApplication);
 }
 

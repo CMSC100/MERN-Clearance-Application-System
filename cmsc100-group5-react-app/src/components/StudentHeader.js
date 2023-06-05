@@ -63,7 +63,7 @@ export default function StudentHeader(props) {
         </ul>
         <div className="menu-container">
           <div className="menu-trigger" onClick={()=>{setOpenNotif(!openNotif); setOpen(false)}}>
-            <FontAwesomeIcon icon={icon({name: 'envelope'})} className='notif-icon' />
+            <FontAwesomeIcon icon={icon({name: 'bell'})} className='notif-icon' />
           </div>
           <div className={`dropdown-menu menu-notif ${openNotif? 'active' : 'inactive'}`}>
             <ul>
