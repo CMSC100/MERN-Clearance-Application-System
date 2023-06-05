@@ -16,7 +16,7 @@ const addNewApplication = async (req, res) => {
     const newApplication = new Application({
       student_name: fullname,
       status: "pending",
-      step: 1,
+      step: 2,
       remarks: [],
       student_submission: [{
         submission_remark: submission_remark,
@@ -70,7 +70,7 @@ const getNotificationsByUser = async (req,res) =>{
     }},
     {$project: {
       _id: 1, 
-      'remarks.app_remarks': 1,
+      'remarks.app_remark': 1,
       'remarks.remark_date': 1, 
       'commenteruser.fname': 1,
       'commenteruser.lname': 1, 
@@ -102,20 +102,47 @@ const getLatestApplicationByUser = async (req,res)=>{
   res.send(latestApplication);
 }
 
+const addSubmissionToApplicationById = async (req, res) => {
+  try {
+    const { applicationID, submission_date,
+      submission_remark, step_given } = req.body
+
+    const newsubmission = {
+      submission_remark: submission_remark,
+      submission_date: submission_date,
+      step_given: step_given
+    }
+
+    console.log(newsubmission)
+
+    const applicationToedit = await Application.updateOne({_id: applicationID}, {$push: {student_submission: newsubmission}})
+
+    if(applicationToedit._id){
+      res.send({ success:true })
+    }else{
+      res.send({ success:false })
+    }
+  } catch (error) {
+    res.send({ success:false })
+  }
+}
+
 const addRemarkToApplicationById = async (req,res) => {
   //req{ _id, app_remarks, remark_date, commenter_email, step_given }
   try {
-    const {_id , app_remarks, remark_date, commenter_email, step_given } = body
+    const {applicationID , app_remarks, remark_date, commenter_email, step_given } = req.body
     const commenter_details = await User.findOne({email: commenter_email})
 
     const newremark = {
-      app_remarks: app_remarks,
+      app_remark: app_remarks,
       remark_date: remark_date,
       commenter: commenter_details._id,
       step_given: step_given
     }
 
-    const applicationToedit = await Application.updateOne({_id: _id}, {$push: {remarks: newremark}})
+    console.log(newremark)
+
+    const applicationToedit = await Application.updateOne({_id: applicationID}, {$push: {remarks: newremark}})
 
     if(applicationToedit._id){
       res.send({ success:true })
@@ -128,24 +155,76 @@ const addRemarkToApplicationById = async (req,res) => {
   
 }
 
+const approvebyAdviser = async (req, res) => {
+  try {
+    console.log(req.body.applicationID)
+    const application = await Application.updateOne({_id: req.body.applicationID}, {step: 3})
+    console.log(application)
+    if(application.matchedCount > 0) {
+      res.send({success: true})
+    } else {
+      res.send({success: false})
+    }
+  } catch (error) {
+    res.send({success: false})
+  }
+}
+
+const approvebyClearance = async (req, res) => {
+  try {
+    const clearance_approver = await User.findOne({email: req.body.email})
+    const application = await Application.updateOne({_id: req.body.applicationID}, {step: 4, clearance_officer: clearance_approver._id, status: "cleared"})
+    if(application.matchedCount > 0) {
+      res.send({success: true})
+    } else {
+      res.send({success: false})
+    }
+  } catch (error) {
+    res.send({success: false})
+  }
+}
+
 const getAllApplicationsPending = async (req, res) => {
-  const userAllApplications = await Application.find({}).where("status").equals("pending")
-//   const userAllApplications = await Application.aggregate([
-//     {$match: {status: "pending"}},
-//     {$lookup: {
-//       from : 'users',
-//       localField: '_id',
-//       foreignField: {$in: 'applications'},
-//       as: 'userdata'
-//     }},
-//     {$project: {
-//       _id: 1, 
-//       'userdata.name': 1,
-//       status: 1,
-//       'student_submission.submission_date': 1
-//     }},
-//   ])
-//   res.send(userAllApplications)
+  const adviser = await User.findOne({email: req.query.email})
+  const userAllApplications = await User.aggregate([
+    {
+      $match: {
+        adviser: adviser._id
+      }
+    },
+    {
+      $lookup: {
+        from: "applications",
+        localField: "applications",
+        foreignField: "_id",
+        as: "matchedApplications"
+      }
+    },
+    {
+      $unwind: "$matchedApplications"
+    },
+    {
+      $match: {
+        "matchedApplications.step": 2
+      }
+    },
+    {
+      $project: {
+        _id: "$matchedApplications._id",
+        student_name: "$matchedApplications.student_name",
+        status: "$matchedApplications.status",
+        step: "$matchedApplications.step",
+        remarks: "$matchedApplications.remarks",
+        student_submission: "$matchedApplications.student_submission"
+      }
+    }
+  ])
+  console.log(userAllApplications)
+  res.send(userAllApplications)
+}
+
+const getAllApplicationsClearance = async (req, res) => {
+  const userAllApplications = await Application.find({step: 3})
   res.send(userAllApplications)
 }
 
@@ -154,5 +233,11 @@ const getApplicationById = async (req, res) => {
   res.send(userApplication)
 }
 
+const getApplicationStep = async (req, res) => {
+  const userApplicationsRef = await User.findOne({email: req.query.email}).select("applications")
+  const userApplications = await Application.find({_id: {$in: userApplicationsRef.applications } })
+  res.send(userApplications[userApplications.length - 1])
+}
 
-export { addNewApplication, getAllApplicationsByUser, getNotificationsByUser, getAllApplicationsPending, getApplicationById, getLatestApplicationByUser, addRemarkToApplicationById } 
+
+export { addNewApplication, getAllApplicationsByUser, getNotificationsByUser, getAllApplicationsPending, getApplicationById, getLatestApplicationByUser, addRemarkToApplicationById, approvebyAdviser, getAllApplicationsClearance, approvebyClearance, getApplicationStep, addSubmissionToApplicationById } 

@@ -20,7 +20,7 @@ const signUp = async (req, res) => {
         mname,
         lname,
         studentno,
-        userType: "student",
+        userType,
         email,
         password,
         applications,
