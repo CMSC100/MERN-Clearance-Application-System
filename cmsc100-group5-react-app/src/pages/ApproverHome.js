@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import Button from "@mui/material/Button";
+import { Button, Modal } from "@mui/material";
 import DownloadIcon from '@mui/icons-material/Download';
 
 import Cookies from 'universal-cookie';
@@ -16,11 +16,22 @@ export default function ApproverHome(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(useLoaderData())
   const navigate = useNavigate()
 
+  const [selectedApplication, setSelectedApplication] = useState("")
+  const [open, setOpen] = useState(false)
+
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/")
     }
   }, [isLoggedIn, navigate])
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const handleOpen = () => {
+    setOpen(true)
+  }
 
   const columns = [
     // {
@@ -62,15 +73,47 @@ export default function ApproverHome(props) {
       renderCell: (params) => (
         <Link to={`/approver-view-submissions/${params.row.id}`}>View All Submissions</Link>
       )
+    },
+    {
+      field: 'action',
+      headerName: 'Action',
+      width: 200,
+      renderCell: (params) => (
+        <>
+          <Button className='approve-Btn' variant="contained" color="success" onClick={() => { localStorage.getItem("userType") === "adviser" ? approvebyAdviser(params.row.id) : approvebyClearance(params.row.id, localStorage.getItem("upmail")) }}>Approve</Button>
+          <Button className='reject-Btn' variant="contained" color="error" onClick={() => {setOpen(true); setSelectedApplication(params.row.id)}}>Return</Button>
+        </>
+        )
     }
   ]
 
   const [rows, setRows] = useState([])
   const renderAfterCalled = useRef(false);
 
+  const userRef = useRef();
+
+  const [remarks, setRemarks] = useState("");
+
   useEffect(()=>{
     if(!renderAfterCalled.current){
-      fetch(`http://localhost:3001/get-all-applications`)
+      console.log(localStorage.getItem("userType"))
+      localStorage.getItem("userType") === "adviser" ? fetch(`http://localhost:3001/get-all-applications-pending?email=` + localStorage.getItem("upmail"))
+      .then(response => response.json())
+      .then(body =>{
+        //convert the data to something useful
+        console.log(JSON.stringify(body))
+        console.log(body)
+        body.map((application)=>{
+          console.log(application.student_submission.submission_remark)
+          const newRow = {
+            id: application._id,
+            name: application.student_name,
+            status: application.status,
+            datecreated: application.student_submission[application.student_submission.length - 1].submission_date,
+          }
+          setRows((oldRows)=>[...oldRows, newRow])
+        })
+      }) : fetch(`http://localhost:3001/get-all-applications-clearance`)
       .then(response => response.json())
       .then(body =>{
         //convert the data to something useful
@@ -92,6 +135,65 @@ export default function ApproverHome(props) {
     renderAfterCalled.current = true;
     
   },[])
+
+  const approvebyAdviser = (application) => {
+    fetch("http://localhost:3001/approve-by-adviser", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ applicationID: application })
+    })
+      .then(response => response.text())
+      .then(body => {
+        console.log(JSON.stringify(body))
+        // check if Mongoose document was successfully edited/updated via the response returned
+        if(Object.values(body)[0] ? "true" : "false" == "true") {
+          // setAccounts(accounts.filter(items=>items.studentno!==studno))
+          setRows(rows.filter(row => row.id !== application))
+          console.log(rows)
+        }
+      })}
+
+      const approvebyClearance = (application, email) => {
+        fetch("http://localhost:3001/approve-by-clearance", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ applicationID: application, email: email })
+        })
+          .then(response => response.text())
+          .then(body => {
+            console.log(JSON.stringify(body))
+            // check if Mongoose document was successfully edited/updated via the response returned
+            if(Object.values(body)[0] ? "true" : "false" == "true") {
+              // setAccounts(accounts.filter(items=>items.studentno!==studno))
+              setRows(rows.filter(row => row.id !== application))
+              console.log(rows)
+            }
+          })}
+  
+      const returnWithRemarks = (application) => {
+        var todayDate = new Date()
+        fetch("http://localhost:3001/add-remark-by-application-id", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ applicationID: application, app_remarks: remarks, remark_date: todayDate, commenter_email: localStorage.getItem("upmail"), step_given: 1})
+        })
+          .then(response => response.text())
+          .then(body => {
+            console.log(JSON.stringify(body))
+            // check if Mongoose document was successfully edited/updated via the response returned
+            if(Object.values(body)[0] ? "true" : "false" == "true") {
+              // setAccounts(accounts.filter(items=>items.studentno!==studno))
+              setRows(rows.filter(row => row.id !== application))
+              console.log(rows)
+            }
+          })
+      }
 
   return (
     <div className="homepage">
@@ -133,6 +235,37 @@ export default function ApproverHome(props) {
             pageSizeOptions={[5,10]}
           />
       </div>
+      <Modal onClose={handleClose} open={open}>
+      <div className="homepage">
+      <div className="container addApprover">
+        <h1 className="heading" id="signup">
+          Add Remarks
+        </h1>
+        <form className="input-holder" autoComplete="off">
+          <TextField
+            label="Enter remarks"
+            variant="outlined"
+            size="medium"
+            multiline
+            maxRows={18}
+            className="input-rounded fname"
+            required
+            inputRef={userRef}
+            onChange={(e) => setRemarks(e.target.value)}
+            sx={{
+              "& .MuiFormLabel-root": {
+                fontFamily: "Poppins",
+              },
+              "& .MuiFormLabel-asterisk": {
+                fontSize: "16px",
+              },
+            }}
+          />
+          <Button className='reject-Btn' variant="contained" color="error" onClick={() => { setOpen(false); returnWithRemarks(selectedApplication)}}>Return</Button>
+        </form>
+        </div>
+      </div>
+        </Modal>
     </div>
   )
 }
