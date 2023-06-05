@@ -26,25 +26,57 @@ export default function Home(props) {
   }, [isLoggedIn, navigate])
 
   function submitApplication(){
-    fetch("http://localhost:3001/add-application",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          upmail: localStorage.getItem("upmail"),
-          submission_remark: submissionRemark
-        })
-      })
+    var todayDate = new Date()
+    fetch(`http://localhost:3001/get-applications-by-user?upmail=${localStorage.getItem("upmail")}`)
       .then(response => response.json())
-      .then(body => {
-        if (body.success) {
-          alert("Successfully added application")
-          // updateStep();
-        }
-        else { alert("Application failed") }
-      })
+      .then(body =>{ 
+        console.log(body[body.length - 1].status)
+        console.log(body.length)
+        if(body[body.length - 1].status !== "cleared") {
+          console.log("APPENDING TO CURRENT APPLICATION")
+        fetch("http://localhost:3001/add-submission-by-application-id",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            upmail: localStorage.getItem("upmail"),
+            applicationID: body[body.length - 1]._id,
+            submission_date: todayDate,
+            submission_remark: submissionRemark, step_given: currentStep
+          })
+        })
+        .then(response => response.json())
+        .then(body => {
+          if (body.success) {
+            alert("Successfully added application")
+            // updateStep();
+          }
+          else { alert("Application failed") }
+        }) 
+      } else {
+        console.log("ADDING NEW APPLICATION")
+        fetch("http://localhost:3001/add-application",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            upmail: localStorage.getItem("upmail"),
+            submission_remark: submissionRemark
+          })
+        })
+        .then(response => response.json())
+        .then(body => {
+          if (body.success) {
+            alert("Successfully added application")
+            // updateStep();
+          }
+          else { alert("Application failed") }
+        })
+      }})
   }
 
   // const [stepper, setStepper] = useState(0);
