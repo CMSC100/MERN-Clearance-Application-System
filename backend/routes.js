@@ -1,6 +1,6 @@
 import { signUp, login, checkIfLoggedIn } from "./auth-controller.js";
 import { getUser, getStudentAccounts, getStudentAccountByStudno, approveAccount, rejectAccount, getAdviser } from "./account-controller.js";
-import { getAllApplicationsByUser, addNewApplication, getNotificationsByUser, getAllApplicationsPending, getApplicationById } from "./applications-controller.js";
+import { getAllApplicationsByUser, addNewApplication, getNotificationsByUser, getAllApplicationsPending, getApplicationById, getLatestApplicationByUser, addRemarkToApplicationById } from "./applications-controller.js";
 
 const setUpRoutes = (app) => {
   app.get("/", (req, res) => { res.send("API Home") });
@@ -18,6 +18,8 @@ const setUpRoutes = (app) => {
   app.get("/get-all-applications-pending", getAllApplicationsPending)
   app.get("/get-application-by-id", getApplicationById)
   app.get("/get-adviser", getAdviser)
+  app.get("/get-latest-application-by-user", getLatestApplicationByUser)
+  app.post("/add-remark-by-application-id", addRemarkToApplicationById)
 }
 
 export default setUpRoutes;

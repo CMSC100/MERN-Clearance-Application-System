@@ -84,6 +84,49 @@ const getNotificationsByUser = async (req,res) =>{
   res.send(allremarks)
 }
 
+const getLatestApplicationByUser = async (req,res)=>{
+  //req { upmail }
+  const userApplicationsRef =  await User.findOne({email: req.query.upmail}).select("applications");
+  const latestApplication = await Application.aggregate([
+    {$match: {_id: {$in: userApplicationsRef.applications }}},
+    {$lookup : {
+      from : 'users',
+      localField : 'remarks.commenter',
+      foreignField : '_id',
+      as : 'commenteruser'
+    }},
+    {$sort: {'student_submission.submission_date': -1}},
+    {$limit:1}
+  ]);
+  res.send(latestApplication);
+}
+
+const addRemarkToApplicationById = async (req,res) => {
+  //req{ _id, app_remarks, remark_date, commenter_email, step_given }
+  try {
+    const {_id , app_remarks, remark_date, commenter_email, step_given } = body
+    const commenter_details = await User.findOne({email: commenter_email})
+
+    const newremark = {
+      app_remarks: app_remarks,
+      remark_date: remark_date,
+      commenter: commenter_details._id,
+      step_given: step_given
+    }
+
+    const applicationToedit = await Application.updateOne({_id: _id}, {$push: {remarks: newremark}})
+
+    if(applicationToedit._id){
+      res.send({ success:true })
+    }else{
+      res.send({ success:false })
+    }
+  } catch (error) {
+    res.send({ success:false })
+  }
+  
+}
+
 const getAllApplicationsPending = async (req, res) => {
   const userAllApplications = await Application.find({}).where("status").equals("pending")
 //   const userAllApplications = await Application.aggregate([
@@ -111,4 +154,4 @@ const getApplicationById = async (req, res) => {
 }
 
 
-export { addNewApplication, getAllApplicationsByUser, getNotificationsByUser, getAllApplicationsPending, getApplicationById } 
+export { addNewApplication, getAllApplicationsByUser, getNotificationsByUser, getAllApplicationsPending, getApplicationById, getLatestApplicationByUser, addRemarkToApplicationById } 
