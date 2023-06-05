@@ -33,6 +33,7 @@ export default function AdminHeader(props) {
       <nav>
         <ul>
           <li><Link to={`/`} className="link-styles">Home</Link></li>
+          <li><Link to={`/create-approver`} className="link-styles">Create Approver Account</Link></li>
           <li><Link to={`/manage-approvers`} className="link-styles">Manage Approver Accounts</Link></li>
         </ul>
         <div className="menu-container">

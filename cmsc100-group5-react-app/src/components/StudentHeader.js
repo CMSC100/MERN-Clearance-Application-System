@@ -33,7 +33,7 @@ export default function StudentHeader(props) {
           const newNotifs = {
             _id: notif._id,
             submission: notif.student_submission.submission_remark,
-            remark: notif.remarks.app_remarks, 
+            remark: notif.remarks.app_remark, 
             notif_date: new Date(notif.remarks.remark_date),
             // commenter name
             commentername: `${notif.commenteruser[0].fname} ${notif.commenteruser[0].lname}`,
@@ -43,7 +43,7 @@ export default function StudentHeader(props) {
           console.log(notifs)
         })
       })
-  }, [openNotif])
+  }, [])
 
   function logout() {
     const cookies = new Cookies();
