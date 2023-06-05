@@ -4,6 +4,25 @@ import { Page, Text, Document, View, StyleSheet } from '@react-pdf/renderer';
 export default function PDFDocument(props) {
     //details of user to be used when generating the PDF document
     const [user, setUser] = useState([])
+    const [currentstep, setCurrentStep] = useState(0)
+    useEffect(() => {
+        fetch(`http://localhost:3001/get-application-step/?email=${localStorage.getItem("upmail")}`).then(response => response.json())
+        .then(body => {
+            setCurrentStep(body)
+            if(body.step == 4) {
+                console.log("GETTING CLEARANCE OFFICER INFO")
+                fetch(`http://localhost:3001/get-clearance-officer/?upmail=${localStorage.getItem("upmail")}`).then(response => response.json())
+            .then(body => {
+                console.log(body)
+                setClearanceOfficer(body)
+            })
+            }
+        })
+    }, [])
+
+    console.log(currentstep)
+    console.log(currentstep.step)
+
     useEffect(() => {
         fetch(`http://localhost:3001/get-user/?upmail=${localStorage.getItem("upmail")}`).then(response => response.json())
         .then(body => {
@@ -19,6 +38,8 @@ export default function PDFDocument(props) {
             setAdviser(body)
         })
     }, [])
+
+    const [clearanceOfficer, setClearanceOfficer] = useState([])
 
     const styles = StyleSheet.create({
     body: {
@@ -72,7 +93,7 @@ return (
             </Text>
             <Text style={styles.text}>Verified:</Text>
             <Text style={styles.text}>Academic Adviser: {adviser.mname === "" ? adviser.fname + " " + adviser.lname : adviser.fname + " " + adviser.mname + " " + adviser.lname}</Text>
-            <Text style={styles.text}>Clearance Officer: {user.clearanceOfficer}</Text>
+            <Text style={styles.text}>Clearance Officer: {clearanceOfficer.mname === "" ? clearanceOfficer.fname + " " + clearanceOfficer.lname : clearanceOfficer.fname + " " + clearanceOfficer.mname + " " + clearanceOfficer.lname}</Text>
 
         </Page>
     </Document>
