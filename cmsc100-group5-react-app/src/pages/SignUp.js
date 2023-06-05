@@ -39,6 +39,7 @@ export default function SignUp() {
           lname: lname,
           email: upmail,
           studentno: stdnum,
+          userType: "student",
           password: pwd,
           isApproved: false
         })
