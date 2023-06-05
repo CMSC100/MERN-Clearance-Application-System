@@ -15,6 +15,9 @@ import AccountDetails from "./pages/AccountDetails";
 import ApproverHome from "./pages/ApproverHome";
 import AllRemarks from "./pages/ViewRemarks";
 import AllSubmissions from "./pages/ViewSubmissionLinks";
+import AddApprover from "./pages/AddApprover";
+import ManageApprovers from "./pages/ManageApprovers";
+import EditApprover from "./pages/EditApprover";
 
 // Send a POST request to API to check if the user is logged in. Redirect the user to /home if already logged in
 const checkIfLoggedInOnLogIn = async () => {
@@ -98,6 +101,9 @@ const router = createBrowserRouter([
       { path: "/home", element: <Home />, loader: checkIfLoggedInOnDash},
       { path: "/admin-home", element: <AdminHome />, loader: checkIfLoggedInAsAdmin},
       { path: "/admin-home/:studentno", element: <AccountDetails />, loader: checkIfLoggedInAsAdmin},
+      { path: "/create-approver", element: <AddApprover />, loader: checkIfLoggedInAsAdmin},
+      { path: "/manage-approvers", element: <ManageApprovers />, loader: checkIfLoggedInAsAdmin},
+      { path: "/edit-approver/:approverEmail", element: <EditApprover />, loader: checkIfLoggedInAsAdmin},
       { path: "/approver-home", element: <ApproverHome/>, loader: checkIfLoggedInAsApprover},
       { path: "/approver-view-remarks/:params", element: <AllRemarks/>, loader: checkIfLoggedInAsApprover},
       { path: "/approver-view-submissions/:params", element: <AllSubmissions/>, loader: checkIfLoggedInAsApprover},
