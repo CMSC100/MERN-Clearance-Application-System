@@ -6,16 +6,27 @@ import { Link } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 
 import Cookies from 'universal-cookie';
-import { Button } from "@mui/material";
+import { Button, Modal } from "@mui/material";
 import { useRef } from "react";
 
 export default function AdminHome(props) {
   const [accounts, setAccounts] = useState([])
+  const [advisers, setAdvisers] = useState([])
   const [isLoggedIn, setIsLoggedIn] = useState(useLoaderData())
   const navigate = useNavigate()
 
   const [rows, setRows] = useState([])
+  const [selectedStudent, setSelectedStudent] = useState("")
+  const [open, setOpen] = useState(false)
   const renderAfterCalled = useRef(false);
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const handleOpen = () => {
+    setOpen(true)
+  }
 
   const columns = [
     // {
@@ -35,7 +46,7 @@ export default function AdminHome(props) {
     {
       field: 'studentName',
       headerName: 'Student Name',
-      width: 400,
+      width: 300,
       type: 'name'
     },
     {
@@ -44,7 +55,7 @@ export default function AdminHome(props) {
       width: 200,
       renderCell: (params) => (
         <>
-          <Button className='approve-Btn' variant="contained" color="success" onClick={() => { approveAcc(params.row.id)}}>Approve</Button>
+          <Button className='approve-Btn' variant="contained" color="success" onClick={() => {setOpen(true); setSelectedStudent(params.row.id)}}>Approve</Button>
           <Button className='reject-Btn' variant="contained" color="error" onClick={() => { rejectAcc(params.row.id)}}>Reject</Button>
         </>
         )
@@ -64,11 +75,15 @@ export default function AdminHome(props) {
                 const newRow = {
                   id: account.studentno,
                   studentNumber: account.studentno,
-                  studentName: `${account.fname} ${account.lname}`,
+                  studentName: account.mname === "" ? account.fname + " " + account.lname : account.fname + " " + account.mname + " " + account.lname,
                 }
                 setRows((oldRows)=>[...oldRows, newRow])
             })}
             )
+            fetch("http://localhost:3001/get-adviser-accounts").then(response => response.json())
+            .then(body => {
+              setAdvisers(body)
+            })
     }}, [isLoggedIn, navigate])
 
     function logout() {
@@ -80,7 +95,7 @@ export default function AdminHome(props) {
         setIsLoggedIn(false)
       }
 
-      const approveAcc = (studno) => {
+      const approveAcc = (adviser, studno) => {
         fetch("http://localhost:3001/approve-student-account", {
           method: "POST",
           headers: {
@@ -98,6 +113,21 @@ export default function AdminHome(props) {
               console.log(rows)
             }
           })
+          fetch("http://localhost:3001/assign-adviser", {
+              method: "POST",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ adviserID: adviser, studentno: studno })
+            })
+              .then(response => response.text())
+              .then(body => {
+                console.log(body)
+                if (body.success) {
+                  alert("Approved student account!")
+                }
+                else { alert("Approval failed")}
+              })
         }
 
         const rejectAcc = (studno) => {
@@ -119,6 +149,8 @@ export default function AdminHome(props) {
                 }
               })
             }
+
+           
 
     return(
       <div className="homepage">
@@ -160,6 +192,12 @@ export default function AdminHome(props) {
                 pageSizeOptions={[5,10]}
               />
         </div>
+        <Modal onClose={handleClose} open={open}>
+        <div className="homepage">
+        <h2 className="heading">Assign an Adviser</h2>
+                {advisers.map((account, i) => <AccountCard num={i} account={account} onAssign={() => {setOpen(false); approveAcc(account._id, selectedStudent)}}></AccountCard>)}
+        </div>
+        </Modal>
       </div>
     )
 }
