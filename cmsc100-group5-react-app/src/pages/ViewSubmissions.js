@@ -85,9 +85,9 @@ export default function ViewSubmissions(props) {
           const newRow = {
             id: application._id,
             step: application.step,
-            link: application.student_submission[0].submission_remark,
+            link: application.student_submission[application.student_submission.length- 1].submission_remark,
             status: application.status,
-            datecreated: application.student_submission[0].submission_date,
+            datecreated: application.student_submission[application.student_submission.length- 1].submission_date,
             dateapproved: "N/A",
             
           }
