@@ -4,8 +4,10 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
 import DownloadIcon from '@mui/icons-material/Download';
 import { IconButton } from '@mui/material';
+import { PDFDownloadLink } from "@react-pdf/renderer"
 
 import StudentHeader from '../components/StudentHeader';
+import PDFDownloader from '../components/PDFDownload';
 
 
 export default function ViewSubmissions(props) {
@@ -18,36 +20,54 @@ export default function ViewSubmissions(props) {
     },
     {
       field: 'link',
-      headerName: 'Application Link',
+      headerName: 'Latest Submission',
       width: 400,
       type: 'link'
     },
     {
       field: 'status',
-      headerName: 'Status',
-      width: 130,
+      headerName: 'Application Status',
+      width: 200,
       type: 'text'
     },
     {
       field: 'datecreated',
-      headerName: 'Date Created',
-      width: 140,
-      type: 'text'
-    },
-    {
-      field: 'dateapproved',
-      headerName: 'Date Approved',
-      width: 140,
+      headerName: 'Submission Date',
+      width: 200,
       type: 'text'
     },
     {
       field: 'download',
       headerName: 'Download PDF',
-      width: 150,
+      width: 300,
       renderCell: (params) => (
-        <IconButton aria-label="download">
-          <DownloadIcon sx={{color:"#001D3D"}} disabled={params.value !== "completed"} />
-        </IconButton>
+        params.row.status == "cleared" ? <PDFDownloadLink document={<PDFDownloader application={params.row.id}/>} fileName="ClearanceForm">
+          {({loading}) => (loading ? <Button sx={{
+          bgcolor: "#001D3D",
+          borderRadius: 20,
+          fontFamily: 'Poppins',
+          fontSize: 16,
+          height: 40,
+          width: 200,
+          color: "white",
+        }}
+        variant="contained" startIcon={<DownloadIcon />} >
+        Loading...
+        </Button> : 
+        
+        <Button sx={{
+          bgcolor: "#001D3D",
+          borderRadius: 20,
+          fontFamily: 'Poppins',
+          fontSize: 16,
+          height: 40,
+          width: 200,
+          color: "white",
+        }}
+        variant="contained" startIcon={<DownloadIcon />} >
+        Download PDF
+        </Button>)}
+        </PDFDownloadLink> : <></>
       )
     }
   ]
@@ -88,7 +108,6 @@ export default function ViewSubmissions(props) {
             link: application.student_submission[application.student_submission.length- 1].submission_remark,
             status: application.status,
             datecreated: application.student_submission[application.student_submission.length- 1].submission_date,
-            dateapproved: "N/A",
             
           }
           setRows((oldRows)=>[...oldRows, newRow])
