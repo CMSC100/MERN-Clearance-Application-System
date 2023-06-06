@@ -40,7 +40,7 @@ export default function AdminHeader(props) {
           <div className="menu-trigger" onClick={() => {setOpen(!open)}}>
             <FontAwesomeIcon icon={icon({name: 'user-circle'})} className='user-icon'/>
           </div>
-          <div className={`dropdown-menu menu-user ${open? 'active' : 'inactive'}`}>
+          <div className={`dropdown-menu menu-admin ${open? 'active' : 'inactive'}`}>
             <ul>
               <li><Link to={`/profile-admin`} className='dropdown-item user-profile-item'>View Profile</Link></li>
             </ul>

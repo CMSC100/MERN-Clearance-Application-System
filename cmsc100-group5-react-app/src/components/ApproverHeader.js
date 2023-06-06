@@ -38,7 +38,7 @@ export default function ApproverHeader(props) {
           <div className="menu-trigger" onClick={() => {setOpen(!open)}}>
             <FontAwesomeIcon icon={icon({name: 'user-circle'})} className='user-icon'/>
           </div>
-          <div className={`dropdown-menu menu-user ${open? 'active' : 'inactive'}`}>
+          <div className={`dropdown-menu menu-approver ${open? 'active' : 'inactive'}`}>
             <ul>
               <li><Link to={`/profile-approver`} className='dropdown-item user-profile-item'>View Profile</Link></li>
             </ul>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridToolbar, GridValueGetterParams } from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
 import DownloadIcon from '@mui/icons-material/Download';
 import { IconButton } from '@mui/material';
@@ -111,13 +111,6 @@ export default function ViewSubmissions(props) {
             
           }
           setRows((oldRows)=>[...oldRows, newRow])
-          // setRows(body.map((application) => ({
-          //   id: application._id,
-          //   link: application.student_submission.submission_remark,
-          //   status: application.status,
-          //   datecreated: application.student_submission.submission_date,
-          //   dateapproved: "N/A"
-          // })))
         })
       })
     }
@@ -132,6 +125,7 @@ export default function ViewSubmissions(props) {
         <h1 className="heading">View Clearance Applications</h1>
         <div className="table">
           <DataGrid
+            slots={{ toolbar: GridToolbar }}
             className='data-table'
             sx={{
               fontFamily: 'Poppins',

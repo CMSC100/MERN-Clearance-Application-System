@@ -5,6 +5,7 @@ import { Icon, IconButton, InputAdornment, TextField } from "@mui/material";
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import Button from "@mui/material/Button";
 import DownloadIcon from '@mui/icons-material/Download';
+import DeleteIcon from '@mui/icons-material/Delete';
 import PDFDocument from "../components/GeneratePDF";
 import { PDFDownloadLink } from "@react-pdf/renderer"
 
@@ -94,14 +95,11 @@ export default function Home(props) {
         .then(body => {
           if (body.success) {
             alert("Successfully added application")
-            // updateStep();
           }
           else { alert("Application failed") }
         })
       }})
   }
-
-  // const [stepper, setStepper] = useState(0);
 
   useEffect(() => {
     fetch(`http://localhost:3001/get-latest-application-by-user?upmail=${localStorage.getItem("upmail")}`,
@@ -123,14 +121,15 @@ export default function Home(props) {
 
   var [currentStep, updateCurrentStep] = useState(0);
 
-  function updateStep () {
-    updateCurrentStep(prevStep => prevStep+1);
-    console.log(currentStep);
-  }
-
   const [submissionRemark, setSubmissionRemark] = useState('')
 
   const [applicationStatus, setApplicationStatus] = useState("");
+
+  const closeApp = () => {
+    updateCurrentStep(0);
+    setSubmissionRemark('');
+    // need pa dagdagan para ma-set as closed sa backend
+  }
 
   useEffect(() => {
     fetch("http://localhost:3001/get-application-status", {
@@ -146,18 +145,21 @@ export default function Home(props) {
       .then(response => response.json())
       .then(data => {
         setApplicationStatus(data.status);
-        updateStep();
+        setSubmissionRemark(data.submissionRemark);
       })
       .catch(error => {
         console.log("Error fetching application status:", error);
       })
   }, []);
 
+  const isTextFieldDisabled = currentStep+1 > 1;
+
   const steps = [
     {
       title: "Submit your GitHub repository",
       element: <form className="github-field"><TextField 
         className="link-field"
+        disabled={isTextFieldDisabled}
         label="Link to your GitHub repository"
         variant="outlined"
         size="normal"
@@ -177,7 +179,7 @@ export default function Home(props) {
           }
         }}
         />
-        <IconButton aria-label="arrow-right" onClick={submissionRemark ? submitApplication : null} children={<ArrowCircleRightIcon sx={{color:"#001D3D", fontSize:35}} disabled={currentStep !== 0} />}></IconButton>
+        <IconButton aria-label="arrow-right" onClick={submissionRemark ? submitApplication : null} children={<ArrowCircleRightIcon sx={{color:"#001D3D", fontSize:35}} disabled={isTextFieldDisabled} />}></IconButton>
         </form>
     },
     {
@@ -190,7 +192,7 @@ export default function Home(props) {
     },
     {
       title: "Download your approved clearance",
-      element: <PDFDownloadLink document={<PDFDocument/>} fileName="ClearanceForm">
+      element: <PDFDownloadLink document={currentStep !== 4 ? <></> : <PDFDocument/>} fileName="ClearanceForm">
         {({loading}) => (loading ? <Button sx={{
           bgcolor: "#001D3D",
           borderRadius: 20,
@@ -213,12 +215,12 @@ export default function Home(props) {
           width: 200,
           color: "white",
         }}
-        disabled={currentStep !== 3}
+        disabled={currentStep+1 !== 4}
         variant="contained" startIcon={<DownloadIcon />} >
         Download PDF
         </Button>)}
       </PDFDownloadLink>
-    },
+    }
   ]
 
   return (
@@ -231,6 +233,21 @@ export default function Home(props) {
         <Stepper steps={steps[2]} index={2} currentStep={currentStep} />
         <Stepper steps={steps[3]} index={3} currentStep={currentStep} />
       </div>
+      <Button className="close"
+      sx={{
+          bgcolor: "#cc3131",
+          borderRadius: 20,
+          fontFamily: 'Poppins',
+          fontSize: 16,
+          height: 60,
+          width: 250,
+          color: "white",
+          marginTop: 2
+        }}
+        onClick={closeApp}
+        variant="contained" startIcon={<DeleteIcon />}>
+        Close Application
+      </Button>
     </div>
   )
 }

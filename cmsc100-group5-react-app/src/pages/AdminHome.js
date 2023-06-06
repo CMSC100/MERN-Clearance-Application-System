@@ -3,7 +3,7 @@ import { useNavigate, useLoaderData } from "react-router-dom"
 import AdminHeader from "../components/AdminHeader"
 import AccountCard from "../components/AccountCard";
 import { Link } from "react-router-dom";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 import Cookies from 'universal-cookie';
 import { Button, Modal } from "@mui/material";
@@ -159,6 +159,7 @@ export default function AdminHome(props) {
         <h1 className="heading">Manage Student Account Applications</h1>
         <div className="table">
           <DataGrid
+                slots={{ toolbar: GridToolbar }}
                 className='data-table'
                 sx={{
                   fontFamily: 'Poppins',
@@ -193,10 +194,12 @@ export default function AdminHome(props) {
               />
         </div>
         <Modal onClose={handleClose} open={open}>
-        <div className="homepage">
-        <h2 className="heading">Assign an Adviser</h2>
-                {advisers.map((account, i) => <AccountCard num={i} account={account} onAssign={() => {setOpen(false); approveAcc(account._id, selectedStudent)}}></AccountCard>)}
-        </div>
+          <div className="holder signup-holder">
+          <div className="container addApprover">
+          <h2 className="heading" id="signup">Assign an Adviser</h2>
+                  {advisers.map((account, i) => <AccountCard num={i} account={account} onAssign={() => {setOpen(false); approveAcc(account._id, selectedStudent)}}></AccountCard>)}
+          </div>
+          </div>
         </Modal>
       </div>
     )

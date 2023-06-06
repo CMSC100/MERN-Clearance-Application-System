@@ -1,7 +1,7 @@
 import Stepper from "../components/Stepper";
 import React, { useState, useEffect, useRef } from "react";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridToolbar, GridValueGetterParams } from '@mui/x-data-grid';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import { Button, Modal } from "@mui/material";
 import DownloadIcon from '@mui/icons-material/Download';
@@ -203,6 +203,7 @@ export default function ApproverHome(props) {
       <h1 className="heading">All Pending Clearance Applications</h1>
       <div className="table">
       <DataGrid
+            slots={{ toolbar: GridToolbar }}
             className='data-table'
             sx={{
               fontFamily: 'Poppins',

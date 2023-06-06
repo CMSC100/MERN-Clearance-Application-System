@@ -95,6 +95,10 @@ li {
   padding: 20px;
 }
 
+.container.addApprover {
+  margin-top: 30px;
+}
+
 .signup {
   width: 450px;
   margin-top: 3%;
@@ -274,7 +278,7 @@ ul {
   z-index: 2
 }
 
-.dropdown-menu.menu-user {
+.dropdown-menu {
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -286,7 +290,15 @@ ul {
   right: 17.5%;
 }
 
-.dropdown-menu.menu-user::before {
+.menu-admin {
+  right: 15.15%;
+}
+
+.menu-approver {
+  right: 22.7%;
+}
+
+.dropdown-menu::before {
   content: '';
   position: absolute;
   top: -5px;

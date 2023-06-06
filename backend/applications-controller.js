@@ -133,11 +133,13 @@ const addRemarkToApplicationById = async (req,res) => {
     const {applicationID , app_remarks, remark_date, commenter_email, step_given } = req.body
     const commenter_details = await User.findOne({email: commenter_email})
 
+    const applicationFound = await Application.findOne({_id: applicationID})
+
     const newremark = {
       app_remark: app_remarks,
       remark_date: remark_date,
       commenter: commenter_details._id,
-      step_given: step_given
+      step_given: applicationFound.step
     }
 
     console.log(newremark)
@@ -206,7 +208,8 @@ const getAllApplicationsPending = async (req, res) => {
     },
     {
       $match: {
-        "matchedApplications.step": 2
+        "matchedApplications.step": 2,
+        "matchedApplications.status": "pending"
       }
     },
     {
@@ -231,7 +234,7 @@ const getClearanceOfficerByApplicationId = async (req, res) => {
 }
 
 const getAllApplicationsClearance = async (req, res) => {
-  const userAllApplications = await Application.find({step: 3})
+  const userAllApplications = await Application.find({step: 3, status: "pending"})
   res.send(userAllApplications)
 }
 
