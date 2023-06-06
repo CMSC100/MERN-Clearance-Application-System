@@ -30,11 +30,33 @@ export default function Home(props) {
     fetch(`http://localhost:3001/get-applications-by-user?upmail=${localStorage.getItem("upmail")}`)
       .then(response => response.json())
       .then(body =>{ 
-        console.log(body[body.length - 1].status)
         console.log(body.length)
-        if(body[body.length - 1].status !== "cleared") {
+        if(body.length > 0) {
           console.log("APPENDING TO CURRENT APPLICATION")
-        fetch("http://localhost:3001/add-submission-by-application-id",
+          if(body[body.length - 1].status !== "cleared") {
+            fetch("http://localhost:3001/add-submission-by-application-id",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                upmail: localStorage.getItem("upmail"),
+                applicationID: body[body.length - 1]._id,
+                submission_date: todayDate,
+                submission_remark: submissionRemark, step_given: currentStep
+              })
+            })
+            .then(response => response.json())
+            .then(body => {
+              if (body.success) {
+                alert("Successfully submitted!")
+                // updateStep();
+              }
+              else { alert("Submission failed") }
+            }) 
+          } else {
+            fetch("http://localhost:3001/add-application",
         {
           method: "POST",
           headers: {
@@ -42,9 +64,7 @@ export default function Home(props) {
           },
           body: JSON.stringify({
             upmail: localStorage.getItem("upmail"),
-            applicationID: body[body.length - 1]._id,
-            submission_date: todayDate,
-            submission_remark: submissionRemark, step_given: currentStep
+            submission_remark: submissionRemark
           })
         })
         .then(response => response.json())
@@ -54,7 +74,9 @@ export default function Home(props) {
             // updateStep();
           }
           else { alert("Application failed") }
-        }) 
+        })
+          }
+       
       } else {
         console.log("ADDING NEW APPLICATION")
         fetch("http://localhost:3001/add-application",
@@ -204,7 +226,6 @@ export default function Home(props) {
       {isLoggedIn && <StudentHeader onClick={props.onClick}/>}
       <h1 className="heading">Welcome, { username }!</h1>
       <div className="stepper-holder">
-        <button onClick={updateStep}>test button</button>
         <Stepper steps={steps[0]} index={0} currentStep={currentStep} />
         <Stepper steps={steps[1]} index={1} currentStep={currentStep} />
         <Stepper steps={steps[2]} index={2} currentStep={currentStep} />
