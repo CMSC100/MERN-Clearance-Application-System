@@ -143,8 +143,9 @@ const addRemarkToApplicationById = async (req,res) => {
     console.log(newremark)
 
     const applicationToedit = await Application.updateOne({_id: applicationID}, {$push: {remarks: newremark}})
+    console.log(applicationToedit)
 
-    if(applicationToedit._id){
+    if(applicationToedit.matchedCount > 0){
       res.send({ success:true })
     }else{
       res.send({ success:false })
