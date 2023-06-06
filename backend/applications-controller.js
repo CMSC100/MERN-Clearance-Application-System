@@ -224,6 +224,12 @@ const getAllApplicationsPending = async (req, res) => {
   res.send(userAllApplications)
 }
 
+const getClearanceOfficerByApplicationId = async (req, res) => {
+  const application = await Application.findOne({_id: req.query.id})
+  const clearanceOfficer = await User.findOne({_id: application.clearance_officer})
+  res.send(clearanceOfficer)
+}
+
 const getAllApplicationsClearance = async (req, res) => {
   const userAllApplications = await Application.find({step: 3})
   res.send(userAllApplications)
@@ -241,4 +247,4 @@ const getApplicationStep = async (req, res) => {
 }
 
 
-export { addNewApplication, getAllApplicationsByUser, getNotificationsByUser, getAllApplicationsPending, getApplicationById, getLatestApplicationByUser, addRemarkToApplicationById, approvebyAdviser, getAllApplicationsClearance, approvebyClearance, getApplicationStep, addSubmissionToApplicationById } 
+export { addNewApplication, getAllApplicationsByUser, getNotificationsByUser, getAllApplicationsPending, getApplicationById, getLatestApplicationByUser, addRemarkToApplicationById, approvebyAdviser, getAllApplicationsClearance, approvebyClearance, getApplicationStep, addSubmissionToApplicationById, getClearanceOfficerByApplicationId } 

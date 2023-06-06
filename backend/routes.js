@@ -1,6 +1,6 @@
 import { signUp, login, checkIfLoggedIn } from "./auth-controller.js";
 import { getUser, getStudentAccounts, getStudentAccountByStudno, approveAccount, rejectAccount, getAdviser, getApproverAccounts, deleteApprover, getApproverAccountByEmail, editApprover, getAdviserAccounts, assignAdviser, getClearanceOfficer } from "./account-controller.js";
-import { getAllApplicationsByUser, addNewApplication, getNotificationsByUser, getAllApplicationsPending, getApplicationById, getLatestApplicationByUser, addRemarkToApplicationById, approvebyAdviser, getAllApplicationsClearance, approvebyClearance, getApplicationStep, addSubmissionToApplicationById } from "./applications-controller.js";
+import { getAllApplicationsByUser, addNewApplication, getNotificationsByUser, getAllApplicationsPending, getApplicationById, getLatestApplicationByUser, addRemarkToApplicationById, approvebyAdviser, getAllApplicationsClearance, approvebyClearance, getApplicationStep, addSubmissionToApplicationById, getClearanceOfficerByApplicationId } from "./applications-controller.js";
 
 const setUpRoutes = (app) => {
   app.get("/", (req, res) => { res.send("API Home") });
@@ -32,6 +32,7 @@ const setUpRoutes = (app) => {
   app.post("/approve-by-clearance", approvebyClearance)
   app.get("/get-application-step", getApplicationStep)
   app.post("/add-submission-by-application-id", addSubmissionToApplicationById)
+  app.get("/get-clearance-officer-by-application-id", getClearanceOfficerByApplicationId)
   // app.post("/update-step", updateStep)
 }
 
