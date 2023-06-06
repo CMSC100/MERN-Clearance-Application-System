@@ -127,6 +127,7 @@ export default function ApproverHome(props) {
             status: application.status,
             datecreated: application.student_submission[application.student_submission.length - 1].submission_date,
           }
+          console.log(newRow)
           setRows((oldRows)=>[...oldRows, newRow])
         })
       })
@@ -144,11 +145,11 @@ export default function ApproverHome(props) {
       },
       body: JSON.stringify({ applicationID: application })
     })
-      .then(response => response.text())
+      .then(response => response.json())
       .then(body => {
         console.log(JSON.stringify(body))
         // check if Mongoose document was successfully edited/updated via the response returned
-        if(Object.values(body)[0] ? "true" : "false" == "true") {
+        if(body.success) {
           // setAccounts(accounts.filter(items=>items.studentno!==studno))
           setRows(rows.filter(row => row.id !== application))
           console.log(rows)
@@ -163,11 +164,11 @@ export default function ApproverHome(props) {
           },
           body: JSON.stringify({ applicationID: application, email: email })
         })
-          .then(response => response.text())
+          .then(response => response.json())
           .then(body => {
             console.log(JSON.stringify(body))
             // check if Mongoose document was successfully edited/updated via the response returned
-            if(Object.values(body)[0] ? "true" : "false" == "true") {
+            if(body.success) {
               // setAccounts(accounts.filter(items=>items.studentno!==studno))
               setRows(rows.filter(row => row.id !== application))
               console.log(rows)
@@ -183,11 +184,11 @@ export default function ApproverHome(props) {
           },
           body: JSON.stringify({ applicationID: application, app_remarks: remarks, remark_date: todayDate, commenter_email: localStorage.getItem("upmail"), step_given: 1})
         })
-          .then(response => response.text())
+          .then(response => response.json())
           .then(body => {
             console.log(JSON.stringify(body))
             // check if Mongoose document was successfully edited/updated via the response returned
-            if(Object.values(body)[0] ? "true" : "false" == "true") {
+            if(body.success) {
               // setAccounts(accounts.filter(items=>items.studentno!==studno))
               setRows(rows.filter(row => row.id !== application))
               console.log(rows)
