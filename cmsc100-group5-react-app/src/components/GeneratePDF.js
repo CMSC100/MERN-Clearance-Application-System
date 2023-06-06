@@ -5,7 +5,13 @@ export default function PDFDocument(props) {
     //details of user to be used when generating the PDF document
     const [user, setUser] = useState([])
     const [currentstep, setCurrentStep] = useState(0)
+    
     useEffect(() => {
+        fetch(`http://localhost:3001/get-applications-by-user?upmail=${localStorage.getItem("upmail")}`)
+      .then(response => response.json())
+      .then(body =>{ 
+        console.log(body.length)
+        if(body.length > 0) {
         fetch(`http://localhost:3001/get-application-step/?email=${localStorage.getItem("upmail")}`).then(response => response.json())
         .then(body => {
             setCurrentStep(body)
@@ -17,8 +23,8 @@ export default function PDFDocument(props) {
                 setClearanceOfficer(body)
             })
             }
-        })
-    }, [])
+        })}
+    })}, [])
 
     console.log(currentstep)
     console.log(currentstep.step)
