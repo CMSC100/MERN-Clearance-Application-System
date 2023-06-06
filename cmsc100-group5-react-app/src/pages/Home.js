@@ -32,8 +32,8 @@ export default function Home(props) {
       .then(body =>{ 
         console.log(body.length)
         if(body.length > 0) {
-          console.log("APPENDING TO CURRENT APPLICATION")
-          if(body[body.length - 1].status !== "cleared") {
+          if(body[body.length - 1].status !== "cleared" && body[body.length - 1].status !== "closed") {
+            console.log("APPENDING TO CURRENT APPLICATION")
             fetch("http://localhost:3001/add-submission-by-application-id",
             {
               method: "POST",

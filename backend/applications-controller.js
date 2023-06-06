@@ -115,9 +115,9 @@ const addSubmissionToApplicationById = async (req, res) => {
 
     console.log(newsubmission)
 
-    const applicationToedit = await Application.updateOne({_id: applicationID}, {$push: {student_submission: newsubmission}})
-
-    if(applicationToedit._id){
+    const applicationToedit = await Application.updateOne({_id: applicationID}, {$push: {student_submission: newsubmission}, status: "pending"})
+    console.log(applicationToedit)
+    if(applicationToedit.matchedCount > 0){
       res.send({ success:true })
     }else{
       res.send({ success:false })
@@ -142,7 +142,7 @@ const addRemarkToApplicationById = async (req,res) => {
 
     console.log(newremark)
 
-    const applicationToedit = await Application.updateOne({_id: applicationID}, {$push: {remarks: newremark}})
+    const applicationToedit = await Application.updateOne({_id: applicationID}, {$push: {remarks: newremark}, status: "returned"})
     console.log(applicationToedit)
 
     if(applicationToedit.matchedCount > 0){
