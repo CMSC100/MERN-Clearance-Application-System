@@ -149,9 +149,7 @@ export default function AdminHome(props) {
                 }
               })
             }
-
-           
-
+          
     return(
       <div className="homepage">
         {isLoggedIn && <AdminHeader onClick={props.onClick}/>}
@@ -195,9 +193,18 @@ export default function AdminHome(props) {
         </div>
         <Modal onClose={handleClose} open={open}>
           <div className="holder signup-holder">
-          <div className="container addApprover">
-          <h2 className="heading" id="signup">Assign an Adviser</h2>
+          <div className="container modal">
+            <h2 className="heading" id="signup">Assign an Adviser</h2>
                   {advisers.map((account, i) => <AccountCard num={i} account={account} onAssign={() => {setOpen(false); approveAcc(account._id, selectedStudent)}}></AccountCard>)}
+            <Button onClick={handleClose} variant="contained" className="cancel" sx={{
+              bgcolor: "#FFF",
+              borderRadius: 20,
+              fontFamily: 'Poppins',
+              fontSize: 16,
+              color: "#001D3D",
+              marginTop: 2
+            }}>Cancel</Button>
+            <button onClick={handleClose} className="cancel-button">x</button>
           </div>
           </div>
         </Modal>
