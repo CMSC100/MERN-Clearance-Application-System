@@ -103,11 +103,11 @@ export default function AdminHome(props) {
           },
           body: JSON.stringify({ studentno: studno })
         })
-          .then(response => response.text())
+          .then(response => response.json())
           .then(body => {
             console.log(JSON.stringify(body))
             // check if Mongoose document was successfully edited/updated via the response returned
-            if(Object.values(body)[0] ? "true" : "false" == "true") {
+            if(body.success) {
               // setAccounts(accounts.filter(items=>items.studentno!==studno))
               setRows(rows.filter(row => row.id !== studno))
               console.log(rows)
@@ -120,7 +120,7 @@ export default function AdminHome(props) {
               },
               body: JSON.stringify({ adviserID: adviser, studentno: studno })
             })
-              .then(response => response.text())
+              .then(response => response.json())
               .then(body => {
                 console.log(body)
                 if (body.success) {
@@ -138,12 +138,12 @@ export default function AdminHome(props) {
               },
               body: JSON.stringify({ studentno: studno })
             })
-              .then(response => response.text())
+              .then(response => response.json())
               .then(body => {
         
                 // when student account request is rejected, the user must then be deleted in the database
                 // check if Mongoose document was successfully deleted via the response returned
-                if(Object.values(body)[0] ? "true" : "false" == "true") {
+                if(body.success) {
                     // setAccounts(accounts.filter(items=>items.studentno!==studno))
                     setRows(rows.filter(row => row.id !== studno))
                 }
