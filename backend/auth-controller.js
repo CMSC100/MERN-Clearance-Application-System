@@ -7,7 +7,7 @@ const User = mongoose.model("User");
 
 const signUp = async (req, res) => {
   try{
-    const {fname, mname, lname, studentno, userType, email, password, applications, adviser, isApproved} = req.body
+    const {fname, mname, lname, studentno, userType, email, password, applications, adviser, isApproved, initialsLname} = req.body
 
     const existingUser = await User.findOne({email})
 
@@ -25,7 +25,8 @@ const signUp = async (req, res) => {
         password,
         applications,
         adviser,
-        isApproved
+        isApproved,
+        initialsLname
     })
 
     const result = await newuser.save()
