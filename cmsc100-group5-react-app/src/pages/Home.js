@@ -128,8 +128,7 @@ export default function Home(props) {
   const [applicationStatus, setApplicationStatus] = useState("");
 
   const closeApp = () => {
-    updateCurrentStep(0);
-    setSubmissionRemark('');
+    
     // need pa dagdagan para ma-set as closed sa backend
     fetch("http://localhost:3001/close-application",{
       method: "POST",
@@ -144,6 +143,8 @@ export default function Home(props) {
     ).then((body) =>{
       if(body.success){
         alert("Successfully Closed Application");
+        updateCurrentStep(0);
+        setSubmissionRemark('');
       }else{
         alert("Closing of Application Unsuccessful")
       }
