@@ -209,15 +209,15 @@ export default function AdminHome(props) {
         {isLoggedIn && <AdminHeader onClick={props.onClick}/>}
         <h2 className="heading">Welcome, Admin {localStorage.getItem("username")}!</h2>
         <h1 className="heading">Manage Student Account Applications</h1>
-        <div>
+        <div className="container bonus">
             <h4 className="import-statement">Import CSV</h4>
-            <form onSubmit={handleUpload}>
-              <input type='file' accept='.csv' name='file' onChange={handleFile}/>
+            <form className="bonus-holder" onSubmit={handleUpload}>
+              <input className="input bonus" type='file' accept='.csv' name='file' onChange={handleFile}/>
               
               {data.map((row, index) => {
                 assignAdviserToAcc(row.StudentNumber, row.Adviser)
               })}
-              <button>Upload</button>
+              <button className="button bonus">Upload</button>
             </form>
                 
         </div>
