@@ -4,6 +4,7 @@ import AdminHeader from "../components/AdminHeader"
 import AccountCard from "../components/AccountCard";
 import { Link } from "react-router-dom";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import Papa from 'papaparse';
 
 import Cookies from 'universal-cookie';
 import { Button, Modal } from "@mui/material";
@@ -110,7 +111,6 @@ export default function AdminHome(props) {
             if(body.success) {
               // setAccounts(accounts.filter(items=>items.studentno!==studno))
               setRows(rows.filter(row => row.id !== studno))
-              console.log(rows)
             }
           })
           fetch("http://localhost:3001/assign-adviser", {
@@ -149,12 +149,78 @@ export default function AdminHome(props) {
                 }
               })
             }
-          
+
+        const assignAdviserToAcc = (studnumber, adviserInitials ) => {
+          fetch("http://localhost:3001/approve-student-account", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ studentno: studnumber })
+        })
+          .then(response => response.json())
+          .then(body => {
+            // check if Mongoose document was successfully edited/updated via the response returned
+            if(body.success) {
+              setRows(rows.filter(row => row.id !== studnumber))
+            }
+          })
+          fetch("http://localhost:3001/assign-adviser-by-initials", {
+              method: "POST",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ initialsLname: adviserInitials, studentno: studnumber })
+            })
+              .then(response => response.json())
+              .then(body => {
+                if (body.success) {
+                  alert("Successfully mapped approved student accounts to their adviser!")
+                }
+                else { alert("Mapping of student account to adviser failed.")}
+              
+                // when student account request is rejected, the user must then be deleted in the database
+                // check if Mongoose document was successfully deleted via the response returned
+                if(body.success) {
+                    setRows(rows.filter(row => row.id !== studnumber))
+                }
+              })
+        }
+    
+        const [file, setFile] = useState()
+
+        function handleFile(event) {
+            setFile(event.target.files[0])
+        }
+
+        const [data, setData] = useState([]);
+
+        const handleUpload = (e) => {
+          Papa.parse(file, {
+            header: true,
+            complete: (results) => {
+              setData(results.data);
+            },
+          })
+        }
+
     return(
       <div className="homepage">
         {isLoggedIn && <AdminHeader onClick={props.onClick}/>}
         <h2 className="heading">Welcome, Admin {localStorage.getItem("username")}!</h2>
         <h1 className="heading">Manage Student Account Applications</h1>
+        <div>
+            <h4 className="import-statement">Import CSV</h4>
+            <form onSubmit={handleUpload}>
+              <input type='file' accept='.csv' name='file' onChange={handleFile}/>
+              
+              {data.map((row, index) => {
+                assignAdviserToAcc(row.StudentNumber, row.Adviser)
+              })}
+              <button>Upload</button>
+            </form>
+                
+        </div>
         <div className="table">
           <DataGrid
                 slots={{ toolbar: GridToolbar }}
