@@ -22,37 +22,69 @@ export default function AddApprover(props) {
       navigate("/")
     }
   }, [isLoggedIn, navigate])
+  
+  function getInitials() {
+    const name = fname + ' ' + mname;
+    return name.match(/(\b\S)?/g).join("").toUpperCase();
+  }
 
   function signUpHandler(e) {
     e.preventDefault();
 
     // form validation goes here 
     if(validPwd && validUpMail){
-      fetch("http://localhost:3001/signup",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          fname: fname,
-          mname: mname,
-          lname: lname,
-          userType: approverType,
-          email: upmail,
-          password: pwd,
-          isApproved: true
+      if(approverType === 'adviser') {
+        fetch("http://localhost:3001/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            fname: fname,
+            mname: mname,
+            lname: lname,
+            userType: approverType,
+            email: upmail,
+            password: pwd,
+            isApproved: true,
+            initialsLname: getInitials() + lname,
+          })
         })
-      })
-      .then(response => response.json())
-      .then(body => {
-        if (body.success) {
-          alert("Successfully created approver!")
-        }
-        else { alert("Cannot create account")}
-      })
+        .then(response => response.json())
+        .then(body => {
+          if (body.success) {
+            alert("Successfully created approver!")
+          }
+          else { alert("Cannot create account")}
+        })
+      }
+      if(approverType === 'clearanceOfficer') {
+        fetch("http://localhost:3001/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            fname: fname,
+            mname: mname,
+            lname: lname,
+            userType: approverType,
+            email: upmail,
+            password: pwd,
+            isApproved: true,
+          })
+        })
+        .then(response => response.json())
+        .then(body => {
+          if (body.success) {
+            alert("Successfully created approver!")
+          }
+          else { alert("Cannot create account")}
+        })
+      }
     }
-    
   }
 
 
@@ -251,6 +283,7 @@ export default function AddApprover(props) {
               typography: "Poppins",
               margin: 0,
               marginTop: 2,
+              marginBottom: 4
             }}
             disabled={!validPwd && !validUpMail ? true : false}
             onClick={(e) => setApproverType("adviser")}

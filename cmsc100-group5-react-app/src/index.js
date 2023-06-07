@@ -18,6 +18,8 @@ import AllSubmissions from "./pages/ViewSubmissionLinks";
 import AddApprover from "./pages/AddApprover";
 import ManageApprovers from "./pages/ManageApprovers";
 import EditApprover from "./pages/EditApprover";
+import AdminProfile from "./pages/AdminProfile";
+import ApproverProfile from "./pages/ApproverProfile"
 
 // Send a POST request to API to check if the user is logged in. Redirect the user to /home if already logged in
 const checkIfLoggedInOnLogIn = async () => {
@@ -109,6 +111,8 @@ const router = createBrowserRouter([
       { path: "/approver-view-submissions/:params", element: <AllSubmissions/>, loader: checkIfLoggedInAsApprover},
       { path: "/view-submissions", element: <ViewSubmissions />, loader: checkIfLoggedInOnDash },
       { path: "/profile-student", element: <Profile />, loader: checkIfLoggedInOnDash},
+      { path: "/profile-admin", element: <AdminProfile />, loader: checkIfLoggedInAsAdmin},
+      { path: "/profile-approver", element: <ApproverProfile />, loader: checkIfLoggedInAsApprover},
       { path: "/signup", element: <SignUp />, loader: checkIfLoggedInOnLogIn },
       { path: "/", element: <LogIn />, loader: checkIfLoggedInOnLogIn },
     ],

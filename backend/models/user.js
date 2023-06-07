@@ -13,7 +13,8 @@ const UserSchema = new mongoose.Schema({
       {type: mongoose.Schema.Types.ObjectId, ref: "Application"}
   ],
   adviser: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
-  isApproved: {type: Boolean, required: true}
+  isApproved: {type: Boolean, required: true},
+  initialsLname: {type: String, required: false},
 })
 
 UserSchema.pre("save", function(next) {

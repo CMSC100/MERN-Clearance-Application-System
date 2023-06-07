@@ -126,7 +126,6 @@ const getAdviserAccounts = async (req, res) => {
 
 const assignAdviser = async (req, res) => {
 	const account = await User.updateOne({adviser: req.body.adviserID}).where({studentno: req.body.studentno})
-	console.log(account.matchedCount)
 	if(account.matchedCount > 0){
 		res.send({ success:true })
 	  }else{
@@ -134,4 +133,26 @@ const assignAdviser = async (req, res) => {
 	  }
 }
 
-export {getUser, getStudentAccounts, getApproverAccounts, getStudentAccountByStudno, approveAccount, rejectAccount, getAdviser, deleteApprover, getApproverAccountByEmail, editApprover, getAdviserAccounts, assignAdviser, getClearanceOfficer }
+// post method for assigning approved students to their corresponding adviser via a CSV file
+// format of CSV: Student number, Adviser (<INITIALS><LASTNAME>)
+const assignAdviserByInitials = async (req, res) => {
+	const acc = await User.findOne({initialsLname: req.body.initialsLname})
+	const account = await User.updateOne({adviser: acc._id}).where({studentno: req.body.studentno})
+	if(account.matchedCount > 0){
+		res.send({ success:true })
+	} else{
+		res.send({ success:false })
+	}
+}
+
+const getAdviserIdByInitials = async (req, res) => {
+	const adviser = await User.findOne({initialsLname: req.query.initialsLname})
+	res.send(adviser)
+}
+
+const getStudentByStudno = async (req, res) => {
+	const student = await User.findOne({studentno: req.query.studentno})
+	res.send(student)
+}
+
+export {getUser, getStudentAccounts, getApproverAccounts, getStudentAccountByStudno, approveAccount, rejectAccount, getAdviser, deleteApprover, getApproverAccountByEmail, editApprover, getAdviserAccounts, assignAdviser, getClearanceOfficer, getAdviserIdByInitials, getStudentByStudno, assignAdviserByInitials}

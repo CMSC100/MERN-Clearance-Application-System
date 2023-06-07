@@ -1,5 +1,5 @@
 import { signUp, login, checkIfLoggedIn } from "./auth-controller.js";
-import { getUser, getStudentAccounts, getStudentAccountByStudno, approveAccount, rejectAccount, getAdviser, getApproverAccounts, deleteApprover, getApproverAccountByEmail, editApprover, getAdviserAccounts, assignAdviser, getClearanceOfficer } from "./account-controller.js";
+import { getUser, getStudentAccounts, getStudentAccountByStudno, approveAccount, rejectAccount, getAdviser, getApproverAccounts, deleteApprover, getApproverAccountByEmail, editApprover, getAdviserAccounts, assignAdviser, getClearanceOfficer, getAdviserIdByInitials, getStudentByStudno, assignAdviserByInitials} from "./account-controller.js";
 import { getAllApplicationsByUser, addNewApplication, getNotificationsByUser, getAllApplicationsPending, getApplicationById, getLatestApplicationByUser, addRemarkToApplicationById, approvebyAdviser, getAllApplicationsClearance, approvebyClearance, getApplicationStep, addSubmissionToApplicationById, getClearanceOfficerByApplicationId, closeApplication, getAllRemarks, getAllSubmissions } from "./applications-controller.js";
 
 const setUpRoutes = (app) => {
@@ -37,6 +37,9 @@ const setUpRoutes = (app) => {
   app.get("/get-all-remarks", getAllRemarks)
   app.get("/get-all-submissions", getAllSubmissions)
   // app.post("/update-step", updateStep)
+  app.get("/get-adviser-by-initials-lname", getAdviserIdByInitials)
+  app.get("/get-student-by-studentno", getStudentByStudno )
+  app.post("/assign-adviser-by-initials", assignAdviserByInitials)
 }
 
 export default setUpRoutes;
