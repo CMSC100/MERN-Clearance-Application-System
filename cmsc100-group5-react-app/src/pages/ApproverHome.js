@@ -33,7 +33,7 @@ export default function ApproverHome(props) {
     setOpen(true)
   }
 
-  const columns = [
+  const columnsAdvsier = [
     // {
     //   field: 'id',
     //   headerName: 'ID',
@@ -43,7 +43,7 @@ export default function ApproverHome(props) {
     {
       field: 'name',
       headerName: 'Student Name',
-      width: 400,
+      width: 300,
       type: 'name'
     },
     {
@@ -56,6 +56,66 @@ export default function ApproverHome(props) {
       field: 'datecreated',
       headerName: 'Date Submitted',
       width: 140,
+      type: 'text'
+    },
+    {
+      field: 'remarks',
+      headerName: 'Remarks',
+      width: 200,
+      renderCell: (params) => (
+        <Link to={`/approver-view-remarks/${params.row.id}`}>View All Remarks</Link>
+      )
+    },
+    {
+      field: 'submissions',
+      headerName: 'Submissions',
+      width: 200,
+      renderCell: (params) => (
+        <Link to={`/approver-view-submissions/${params.row.id}`}>View All Submissions</Link>
+      )
+    },
+    {
+      field: 'action',
+      headerName: 'Action',
+      width: 200,
+      renderCell: (params) => (
+        <>
+          <Button className='approve-Btn' variant="contained" color="success" onClick={() => { localStorage.getItem("userType") === "adviser" ? approvebyAdviser(params.row.id) : approvebyClearance(params.row.id, localStorage.getItem("upmail")) }}>Approve</Button>
+          <Button className='reject-Btn' variant="contained" color="error" onClick={() => {setOpen(true); setSelectedApplication(params.row.id)}}>Return</Button>
+        </>
+        )
+    }
+  ]
+
+  const columnsClearance = [
+    // {
+    //   field: 'id',
+    //   headerName: 'ID',
+    //   width: 70,
+    //   type: 'text'
+    // },
+    {
+      field: 'name',
+      headerName: 'Student Name',
+      width: 300,
+      type: 'name'
+    },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 130,
+      type: 'text'
+    },
+    {
+      field: 'datecreated',
+      headerName: 'Date Submitted',
+      width: 140,
+      type: 'text'
+    },
+    {
+      field: 'adviser',
+      headerName: 'Adviser',
+      width: 200,
       type: 'text'
     },
     {
@@ -119,13 +179,13 @@ export default function ApproverHome(props) {
         //convert the data to something useful
         console.log(JSON.stringify(body))
         console.log(body)
-        body.map((application)=>{
-          console.log(application.student_submission.submission_remark)
+        body.map((applicationAdviser)=>{
           const newRow = {
-            id: application._id,
-            name: application.student_name,
-            status: application.status,
-            datecreated: application.student_submission[application.student_submission.length - 1].submission_date,
+            id: applicationAdviser.applications[applicationAdviser.applications.length - 1]._id,
+            name: applicationAdviser.applications[applicationAdviser.applications.length - 1].student_name,
+            status: applicationAdviser.applications[applicationAdviser.applications.length - 1].status,
+            datecreated: applicationAdviser.applications[applicationAdviser.applications.length - 1].student_submission[applicationAdviser.applications[applicationAdviser.applications.length - 1].student_submission.length - 1].submission_date,
+            adviser: applicationAdviser.adviser.mname === "" ? applicationAdviser.adviser.fname + " " + applicationAdviser.adviser.lname : applicationAdviser.adviser.fname + " " + applicationAdviser.adviser.mname + " " + applicationAdviser.adviser.lname
           }
           console.log(newRow)
           setRows((oldRows)=>[...oldRows, newRow])
@@ -228,7 +288,7 @@ export default function ApproverHome(props) {
               },
             }}
             rows={rows}
-            columns={columns}
+            columns={localStorage.getItem("userType") === "adviser" ? columnsAdvsier : columnsClearance}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 5 },
