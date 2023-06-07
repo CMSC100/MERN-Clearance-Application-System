@@ -102,6 +102,10 @@ li {
   padding: 30px;
 }
 
+.container.profile {
+  padding: 30px;
+}
+
 .container.login {
   margin: 0px;
 }

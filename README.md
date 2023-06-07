@@ -45,27 +45,35 @@
 
 ## About The Project
 
-[![Application Screenshot 1][product-screenshot-1]]
-[![Application Screenshot 2][product-screenshot-2]]
-[![Application Screenshot 3][product-screenshot-3]]
-[![Application Screenshot 4][product-screenshot-4]]
-[![Application Screenshot 5][product-screenshot-5]]
-[![Application Screenshot 6][product-screenshot-6]]
+![Screenshot 1][page-screenshot-1]
+![Screenshot 2][page-screenshot-2]
+![Screenshot 3][page-screenshot-3]
+![Screenshot 4][page-screenshot-4]
+![Screenshot 5][page-screenshot-5]
+![Screenshot 6][page-screenshot-6]
+![Screenshot 6][page-screenshot-7]
+![Screenshot 6][page-screenshot-8]
 
-Hao Are You? is a health monitoring mobile application created with Flutter.
-
-The application has authentication (Sign Up and Log In) and authorization (User Types) features.
-
-The application utilizes a QR code generator and QR code scanner for the students' daily building pass.
+This is a git repository for a clearance application web application.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
 
-- [![Flutter][flutter-shield]](flutter-url)
-- [![Firebase][firebase-shield]](firebase-url)
+- [![MongoDB][mongodb-shield]](mongodb-url)
+- [![Express.js][express-shield]](express-url)
+- [![React.js][react-shield]](react-url)
+- [![Node.js][node-shield]](node-url)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Project Features
+
+1. User authorization and authentication
+2. Clearance application process (submission, approval, closing, and returning)
+3. Account application process (approval and rejection)
+4. Downloading an auto-generated PDF file
+5. Uploading a CSV file
 
 <!-- GETTING STARTED -->
 
@@ -77,54 +85,53 @@ To get a local copy up and running, follow these simple steps.
 
 ### Prerequisites
 
-- Flutter
-  `https://docs.flutter.dev/get-started/install/windows`
-- Firebase
-  `https://firebase.google.com/docs/flutter/setup?platform=ios`
+- Node.js
+  ```sh
+  https://nodejs.org/en/download
+  ```
+- npm
+  ```sh
+  npm install npm@latest -g
+  ```
 
-### Installation
+### How to Run
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/CMSC-23-2nd-Sem-2022-2023/project-sana-pumasa.git
+   git clone https://github.com/CMSC100/project-sadirige.git
    ```
 2. Install the dependencies
    ```sh
-   flutter pub get
+   npm install
    ```
-3. Run the Flutter application
+3. Run the backend application
    ```sh
-   flutter run -v
+   cd backend
+   node index.js
+   ```
+4. Run the frontend application
+   ```sh
+   cd cmsc100-group5-react-app
+   npm start
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 
-## Usage: Student
+## Usage Guidelines
 
-- Student
-  - To create an account, sign up as a Student.
-  - On the Homepage, you may...
-    - go to Entries to...
-      - **submit an Daily Entry**, and
-      - **request to edit or delete your Daily Entry**.
-    - go to Profile to...
-      - **see your information**, and
-      - **generate your Daily QR Pass**.
-- Entrance Monitor
-  - To create an account, sign up as an Entrance Monitor.
-  - On the Homepage drawer, you may...
-    - **scan the Students' Daily QR Pass**,
-    - **view the Students' logs**, and
-    - **update the Students' logs**.
-- Admin
-  - To create an account, sign up as an Admin.
-  - On the Homepage drawer, you may...
-    - **view all Students' information**,
-    - **view all Under Quarantine and Under Monitoring Students**,
-    - **accept/reject the edit or delete entry requests by Students**, and
-    - **elevate the user type of the users in the system**.
+- To create a new account, click on **Sign Up**.
+  - Wait for the admin to approve your account and assign you an adviser.
+- To submit an application...
+  1. Submit your GitHub repository.
+  2. Await for your adviser to review and approve your application.
+  3. Await for the clearance officer to review and approve your application.
+  4. Download your approved clearance.
+  - Notes:
+    - You may only submit **one** application at a time.
+    - You may close your application at any time.
+- You may view all of your applications on **View Clearance Applications**.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -132,30 +139,30 @@ To get a local copy up and running, follow these simple steps.
 
 ## Contact
 
-Kristian Paolo David | [kpdavid3](https://github.com/kpdavid3) - kpdavid3@up.edu.ph
-Vernon Allen Fajilan | [vernonallen1](https://github.com/vernonallen1) - vffajilan@up.edu.ph
-Janelle Maxine Mangalao | [jnllaee](https://github.com/jnllaee) - jgmangalao@up.edu.ph
-Sean Joseph Marin | [scmarin](https://github.com/scmarin) - scmarin@up.edu.ph
+Njord Daniel Cinense | [Danke86](https://github.com/Danke86) - npcinense@up.edu.ph<br>
+Sean Michael Dirige | [sadirige](https://github.com/sadirige) - sadirige@up.edu.ph<br>
+Janelle Maxine Mangalao | [jnllaee](https://github.com/jnllaee) - jgmangalao@up.edu.ph<br>
+Rainier John Pendon | [rainpends](https://github.com/rainpends) - rppendon@up.edu.ph<br>
 
-Project Link: [https://github.com/CMSC-23-2nd-Sem-2022-2023/project-sana-pumasa.git](https://github.com/CMSC-23-2nd-Sem-2022-2023/project-sana-pumasa.git)
+Project Link: [https://github.com/CMSC100/project-sadirige](https://github.com/CMSC100/project-sadirige)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
-[product-screenshot-1]: images/screenshots/1.jpg
-[product-screenshot-2]: images/screenshots/2.jpg
-[product-screenshot-3]: images/screenshots/3.jpg
-[product-screenshot-4]: images/screenshots/4.jpg
-[product-screenshot-5]: images/screenshots/6.jpg
-[product-screenshot-6]: images/screenshots/5.jpg
-[usage-screenshot-1]: images/screenshots/usage/sign-up-student.jpg
-[mongodb-shield]: https://img.shields.io/badge/flutter-0096FF?style=for-the-badge&logo=flutter&logoColor=white
-[mongodb-url]: https://flutter.dev/
-[firebase-shield]: https://img.shields.io/badge/firebase-FFAF37?style=for-the-badge&logo=firebase&logoColor=white
-[firebase-url]: https://firebase.google.com/
+[page-screenshot-1]: images/screenshots/1.png
+[page-screenshot-2]: images/screenshots/2.png
+[page-screenshot-3]: images/screenshots/3.png
+[page-screenshot-4]: images/screenshots/4.png
+[page-screenshot-5]: images/screenshots/5.png
+[page-screenshot-6]: images/screenshots/6.png
+[page-screenshot-7]: images/screenshots/7.png
+[page-screenshot-8]: images/screenshots/8.png
+[mongodb-shield]: https://img.shields.io/badge/mongodb-13aa52?style=for-the-badge&logo=mongodb&logoColor=white
+[mongodb-url]: https://www.mongodb.com/
+[express-shield]: https://img.shields.io/badge/express.js-000000?style=for-the-badge&logo=express&logoColor=white
+[express-url]: https://expressjs.com/
+[react-shield]: https://img.shields.io/badge/react.js-61DAFB?style=for-the-badge&logo=react&logoColor=black
+[react-url]: https://react.dev/
+[node-shield]: https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=node.js&logoColor=white
+[node-url]: https://nodejs.org/en
