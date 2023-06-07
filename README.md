@@ -72,8 +72,9 @@ This is a git repository for a clearance application web application.
 1. User authorization and authentication
 2. Clearance application process (submission, approval, closing, and returning)
 3. Account application process (approval and rejection)
-4. Downloading an auto-generated PDF file
-5. Uploading a CSV file
+4. Notifications for user to see the status of their application
+5. Downloading an auto-generated PDF file
+6. Uploading a CSV file
 
 <!-- GETTING STARTED -->
 
