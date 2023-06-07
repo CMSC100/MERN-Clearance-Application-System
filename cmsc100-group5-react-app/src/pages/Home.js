@@ -112,9 +112,12 @@ export default function Home(props) {
     })
       .then(response => response.json())
       .then(body => {
+        console.log(JSON.stringify(body[0]))
         console.log(JSON.stringify(body[0].step))
-        setCurrentStatus(body[0].status)
-        updateCurrentStep(body[0].step-1);
+        if(body.status != "closed"){
+          setCurrentStatus(body[0].status)
+          updateCurrentStep(body[0].step-1);
+        }
       })
       .catch(error => {
         console.log("Error fetching application status:", error);
