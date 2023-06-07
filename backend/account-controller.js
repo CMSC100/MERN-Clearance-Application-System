@@ -41,7 +41,7 @@ User.findOne({ email: req.query.upmail })
       }
     }).catch((err) => {
 		// Handle the error
-		console.error(err);
+		console.log(err);
 	  });
 }
 

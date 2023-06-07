@@ -78,7 +78,6 @@ const getNotificationsByUser = async (req,res) =>{
       'student_submission.submission_remark': 1
     }},
     {$sort: {'remarks.remark_date': 1}},
-    {$limit: 10}
   ])
   console.log(allremarks)
   res.send(allremarks)
@@ -234,8 +233,32 @@ const getClearanceOfficerByApplicationId = async (req, res) => {
 }
 
 const getAllApplicationsClearance = async (req, res) => {
-  const userAllApplications = await Application.find({step: 3, status: "pending"})
-  res.send(userAllApplications)
+  User.find({userType: "student", isApproved: "true", applications: { $ne: []} })
+  .populate({
+    path: "applications",
+    model: "Application",
+    options: {sort: {_id: -1}, limit: 1},
+    match: {step: 3, status: "pending"},
+    populate: [{
+      path: "remarks.commenter",
+      model: "User",
+      select: "fname mname lname" 
+    },
+    {
+      path: "remarks",
+      match: {step_given: 2}
+    }]
+  })
+  .populate("adviser", "fname mname lname") 
+  .exec().then((users) => {
+    const userAllApplications = users.filter(user => user.applications.length > 0)
+    res.send(userAllApplications)
+    }).catch((err) => {
+      if (err) {
+        // Handle error and send an error response
+        console.log(err)
+      }
+    })
 }
 
 const getApplicationById = async (req, res) => {
