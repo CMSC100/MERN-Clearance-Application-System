@@ -272,5 +272,42 @@ const getApplicationStep = async (req, res) => {
   res.send(userApplications[userApplications.length - 1])
 }
 
+const closeApplication = async (req, res) => {
+  //req: { upmail }
+  console.log(req.body.upmail)
+  const userApplicationsRef = await User.findOne({email: req.body.upmail}).select("applications")
+  console.log(userApplicationsRef)
+  if(userApplicationsRef == null){
+    res.send({success: false})  
+  }
+  const latestApplication = await Application.updateOne(
+    {
+    _id: {$in: userApplicationsRef.applications}, 
+    status: {$in: ["pending", "returned"]}
+    },
+    {
+      status: "closed"
+    }
+  )
 
-export { addNewApplication, getAllApplicationsByUser, getNotificationsByUser, getAllApplicationsPending, getApplicationById, getLatestApplicationByUser, addRemarkToApplicationById, approvebyAdviser, getAllApplicationsClearance, approvebyClearance, getApplicationStep, addSubmissionToApplicationById, getClearanceOfficerByApplicationId } 
+  if(latestApplication.matchedCount > 0){
+    res.send({success : true})
+  }else{
+    res.send({success: false})
+  }
+}
+
+const getAllRemarks = async (req, res) => {
+  //req { id }
+  const application = await Application.findOne({_id: req.query.id})
+  res.send(application.remarks)
+}
+
+const getAllSubmissions = async (req,res) => {{
+  //req { id }
+  const application = await Application.findOne({_id: req.query.id})
+  res.send(application.student_submission)
+}}
+
+
+export { addNewApplication, getAllApplicationsByUser, getNotificationsByUser, getAllApplicationsPending, getApplicationById, getLatestApplicationByUser, addRemarkToApplicationById, approvebyAdviser, getAllApplicationsClearance, approvebyClearance, getApplicationStep, addSubmissionToApplicationById, getClearanceOfficerByApplicationId, closeApplication, getAllRemarks, getAllSubmissions } 

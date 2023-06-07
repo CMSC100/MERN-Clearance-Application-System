@@ -131,6 +131,25 @@ export default function Home(props) {
     updateCurrentStep(0);
     setSubmissionRemark('');
     // need pa dagdagan para ma-set as closed sa backend
+    fetch("http://localhost:3001/close-application",{
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        upmail: localStorage.getItem("upmail")
+      })
+    }).then(
+      response => response.json()
+    ).then((body) =>{
+      if(body.success){
+        alert("Successfully Closed Application");
+      }else{
+        alert("Closing of Application Unsuccessful")
+      }
+    })
+
+    
   }
 
   useEffect(() => {
