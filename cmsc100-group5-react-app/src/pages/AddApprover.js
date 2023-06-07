@@ -283,6 +283,7 @@ export default function AddApprover(props) {
               typography: "Poppins",
               margin: 0,
               marginTop: 2,
+              marginBottom: 4
             }}
             disabled={!validPwd && !validUpMail ? true : false}
             onClick={(e) => setApproverType("adviser")}
