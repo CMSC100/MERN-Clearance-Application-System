@@ -255,7 +255,6 @@ const getAllApplicationsClearance = async (req, res) => {
     res.send(userAllApplications)
     }).catch((err) => {
       if (err) {
-        // Handle error and send an error response
         console.log(err)
       }
     })
@@ -299,13 +298,30 @@ const closeApplication = async (req, res) => {
 
 const getAllRemarks = async (req, res) => {
   //req { id }
-  const application = await Application.findOne({_id: req.query.id})
-  res.send(application.remarks)
+  try {
+    const application = await Application.findOne({_id: req.query.id})
+    .populate({
+      path: 'remarks.commenter',
+      model: 'User',
+      select: 'fname mname lname'
+    })
+
+    if(!application) {
+      console.log("Application not found!")
+    }
+    else {
+      console.log(application.remarks)
+      res.send(application.remarks)
+    }
+  } catch(err){
+    console.log(err)
+  }
 }
 
 const getAllSubmissions = async (req,res) => {{
   //req { id }
   const application = await Application.findOne({_id: req.query.id})
+  console.log(application.student_submission)
   res.send(application.student_submission)
 }}
 

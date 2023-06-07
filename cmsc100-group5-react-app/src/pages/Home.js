@@ -114,7 +114,7 @@ export default function Home(props) {
       .then(body => {
         console.log(JSON.stringify(body[0]))
         console.log(JSON.stringify(body[0].step))
-        if(body.status != "closed"){
+        if(body[0].status !== "closed"){
           setCurrentStatus(body[0].status)
           updateCurrentStep(body[0].step-1);
         }
@@ -179,7 +179,7 @@ export default function Home(props) {
 
   const isTextFieldDisabled = currentStep+1 > 1;
   const allowNewApplication = currentStep+1 !== 4
-  const allowSubmission = currentStatus !== "returned"
+  const allowSubmission = currentStatus !== "returned" && currentStatus !== "closed"
   const isCleared = currentStatus == "cleared"
 
   const steps = [
