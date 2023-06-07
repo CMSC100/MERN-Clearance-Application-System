@@ -18,6 +18,7 @@ export default function Home(props) {
   //authentication
   const username = localStorage.getItem("username")
   const [isLoggedIn, setIsLoggedIn] = useState(useLoaderData())
+  const [currentStatus, setCurrentStatus] = useState("")
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -112,6 +113,7 @@ export default function Home(props) {
       .then(response => response.json())
       .then(body => {
         console.log(JSON.stringify(body[0].step))
+        setCurrentStatus(body[0].status)
         updateCurrentStep(body[0].step-1);
       })
       .catch(error => {
@@ -153,13 +155,16 @@ export default function Home(props) {
   }, []);
 
   const isTextFieldDisabled = currentStep+1 > 1;
+  const allowNewApplication = currentStep+1 !== 4
+  const allowSubmission = currentStatus !== "returned"
+  const isCleared = currentStatus == "cleared"
 
   const steps = [
     {
       title: "Submit your GitHub repository",
       element: <form className="github-field"><TextField 
         className="link-field"
-        disabled={isTextFieldDisabled}
+        disabled={isTextFieldDisabled && allowNewApplication && allowSubmission}
         label="Link to your GitHub repository"
         variant="outlined"
         size="normal"
@@ -179,7 +184,7 @@ export default function Home(props) {
           }
         }}
         />
-        <IconButton aria-label="arrow-right" onClick={submissionRemark ? submitApplication : null} children={<ArrowCircleRightIcon sx={{color:"#001D3D", fontSize:35}} disabled={isTextFieldDisabled} />}></IconButton>
+        <IconButton aria-label="arrow-right" onClick={submissionRemark ? submitApplication : null} children={<ArrowCircleRightIcon sx={{color:"#001D3D", fontSize:35}} disabled={isTextFieldDisabled && allowNewApplication && allowSubmission} />}></IconButton>
         </form>
     },
     {
@@ -192,7 +197,7 @@ export default function Home(props) {
     },
     {
       title: "Download your approved clearance",
-      element: <PDFDownloadLink document={currentStep !== 4 ? <></> : <PDFDocument/>} fileName="ClearanceForm">
+      element: <PDFDownloadLink document={currentStep+1 !== 4 ? <></> : <PDFDocument/>} fileName="ClearanceForm">
         {({loading}) => (loading ? <Button sx={{
           bgcolor: "#001D3D",
           borderRadius: 20,
@@ -245,6 +250,7 @@ export default function Home(props) {
           marginTop: 2
         }}
         onClick={closeApp}
+        disabled={isCleared}
         variant="contained" startIcon={<DeleteIcon />}>
         Close Application
       </Button>
