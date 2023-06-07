@@ -20,7 +20,7 @@ const signUp = async (req, res) => {
         mname,
         lname,
         studentno,
-        userType: "student",
+        userType,
         email,
         password,
         applications,
@@ -73,7 +73,7 @@ const login = async (req, res) => {
     const token = jwt.sign(tokenPayload, "THIS_IS_A_SECRET_STRING");
 
     // return the token to the client
-    return res.send({ success: true, token, username: user.fname, upmail: user.email });
+    return res.send({ success: true, token, username: user.fname, upmail: user.email, userType: user.userType });
 
 
   })

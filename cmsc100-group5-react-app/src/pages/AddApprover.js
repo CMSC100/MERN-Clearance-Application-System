@@ -1,23 +1,24 @@
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLoaderData } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
+import ApproverHeader from "../components/ApproverHeader";
+import AdminHeader from "../components/AdminHeader.js";
 
 const PWD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,24}$/;
-const STDNUM_REGEX = /^(19[0-9]{2}|20[0-2][0-9])-\d{5}$/;
 const EMAIL_REGEX = /^[a-z0-9]+@up\.edu\.ph$/;
 
-export default function SignUp() {
+export default function AddApprover(props) {
   //authentication
   const navigate = useNavigate()
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(useLoaderData());
   
   // redirect when login is successful
   useEffect(() => {
-    if (isLoggedIn) {
+    if (!isLoggedIn) {
       navigate("/")
     }
   }, [isLoggedIn, navigate])
@@ -26,7 +27,7 @@ export default function SignUp() {
     e.preventDefault();
 
     // form validation goes here 
-    if(validPwd && validStdNum && validUpMail){
+    if(validPwd && validUpMail){
       fetch("http://localhost:3001/signup",
       {
         method: "POST",
@@ -37,19 +38,18 @@ export default function SignUp() {
           fname: fname,
           mname: mname,
           lname: lname,
+          userType: approverType,
           email: upmail,
-          studentno: stdnum,
-          userType: "student",
           password: pwd,
-          isApproved: false
+          isApproved: true
         })
       })
       .then(response => response.json())
       .then(body => {
         if (body.success) {
-          alert("Successfully sign up!")
+          alert("Successfully created approver!")
         }
-        else { alert("Sign up failed")}
+        else { alert("Cannot create account")}
       })
     }
     
@@ -67,13 +67,11 @@ export default function SignUp() {
   const [validPwd, setValidPwd] = useState(false);
   const [pwdFocus, setPwdFocus] = useState(false);
 
-  const [stdnum, setStdNum] = useState("");
-  const [validStdNum, setValidStdNum] = useState(false);
-  const [stdNumFocus, setStdNumFocus] = useState(false);
-
   const [upmail, setUpMail] = useState("");
   const [validUpMail, setValidUpMail] = useState(false);
   const [UpMailFocus, setUpMailFocus] = useState(false);
+
+  const [approverType, setApproverType] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
@@ -88,11 +86,6 @@ export default function SignUp() {
   }, [pwd]);
 
   useEffect(() => {
-    const res = STDNUM_REGEX.test(stdnum);
-    setValidStdNum(res);
-  }, [stdnum]);
-
-  useEffect(() => {
     const res = EMAIL_REGEX.test(upmail);
     setValidUpMail(res);
   }, [upmail]);
@@ -103,9 +96,10 @@ export default function SignUp() {
 
   return (
     <div className="holder signup-holder">
-      <div className="container signup">
+      {isLoggedIn && <AdminHeader onClick={props.onClick}/>}
+      <div className="container addApprover">
         <h1 className="heading" id="signup">
-          Sign Up
+          Create an Approver Account
         </h1>
         <form className="input-holder" onSubmit={signUpHandler} autoComplete="off">
           <TextField
@@ -192,41 +186,6 @@ export default function SignUp() {
             Please enter a valid UP Mail, ending with <code>@up.edu.ph</code>.
           </p>
           <TextField
-            label="Student Number"
-            variant="outlined"
-            size="small"
-            className="input-rounded stdnum"
-            required
-            aria-invalid={validStdNum ? "false" : "true"}
-            aria-describedby="stdnumnote"
-            onChange={(e) => setStdNum(e.target.value)}
-            onFocus={() => setStdNumFocus(true)}
-            onBlur={() => setStdNumFocus(false)}
-            sx={{
-              "& .MuiFormLabel-root": {
-                fontFamily: "Poppins",
-              },
-              "& .MuiFormLabel-asterisk": {
-                fontSize: "16px",
-              },
-            }}
-          />
-          <p
-            id="stdnumnote"
-            className={
-              stdNumFocus && stdnum && !validStdNum
-                ? "instructions"
-                : "instructions-offscreen"
-            }
-          >
-            <FontAwesomeIcon
-              icon={icon({ name: "info-circle" })}
-              className="icon info-icon"
-            />
-            Please enter a valid student number, with format{" "}
-            <code>XXXX-XXXXX (ex.2021-12345)</code>
-          </p>
-          <TextField
             type="password"
             label="Password"
             variant="outlined"
@@ -278,17 +237,27 @@ export default function SignUp() {
               margin: 0,
               marginTop: 2,
             }}
-            disabled={!validPwd && !validStdNum && !validUpMail ? true : false}
+            disabled={!validPwd && !validUpMail ? true : false}
+            onClick={(e) => setApproverType("clearanceOfficer")}
           >
-            Sign Up
+            Add as Clearance Officer
           </Button>
-          <p className="existing">
-            Have an existing account?{" "}
-            <Link to={`/`} className="text login-text">
-              Log In
-            </Link>
-            .
-          </p>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              bgcolor: "#001D3D",
+              borderRadius: 20,
+              typography: "Poppins",
+              margin: 0,
+              marginTop: 2,
+            }}
+            disabled={!validPwd && !validUpMail ? true : false}
+            onClick={(e) => setApproverType("adviser")}
+          >
+            Add as Adviser
+          </Button>
+          
         </form>
       </div>
     </div>

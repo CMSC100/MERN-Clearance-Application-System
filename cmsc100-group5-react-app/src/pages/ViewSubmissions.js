@@ -1,70 +1,96 @@
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridToolbar, GridValueGetterParams } from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
 import DownloadIcon from '@mui/icons-material/Download';
 import { IconButton } from '@mui/material';
+import { PDFDownloadLink } from "@react-pdf/renderer"
 
 import StudentHeader from '../components/StudentHeader';
-
-
-const columns = [
-  // {
-  //   field: 'id',
-  //   headerName: 'ID',
-  //   width: 70,
-  //   type: 'text'
-  // },
-  {
-    field: 'link',
-    headerName: 'Application Link',
-    width: 400,
-    type: 'link'
-  },
-  {
-    field: 'status',
-    headerName: 'Status',
-    width: 130,
-    type: 'text'
-  },
-  {
-    field: 'datecreated',
-    headerName: 'Date Created',
-    width: 140,
-    type: 'text'
-  },
-  {
-    field: 'dateapproved',
-    headerName: 'Date Approved',
-    width: 140,
-    type: 'text'
-  },
-  {
-    field: 'download',
-    headerName: 'Download PDF',
-    width: 150,
-    renderCell: (params) => (
-      <IconButton aria-label="download">
-        <DownloadIcon sx={{color:"#001D3D"}} />
-      </IconButton>
-    )
-  }
-]
-
-// const rows = [
-//   {
-//     id: 1,
-//     link: "http://localhost:3000/view-submissions",
-//     status: "In progress",
-//     datecreated: "04-01-2023",
-//     dateapproved: "05-01-2023",
-//   }
-// ]
+import PDFDownloader from '../components/PDFDownload';
 
 
 export default function ViewSubmissions(props) {
+  const columns = [
+    {
+      field: 'step',
+      headerName: 'Step',
+      width: 80,
+      type: 'number'
+    },
+    {
+      field: 'link',
+      headerName: 'Latest Submission',
+      width: 400,
+      type: 'link'
+    },
+    {
+      field: 'status',
+      headerName: 'Application Status',
+      width: 200,
+      type: 'text'
+    },
+    {
+      field: 'datecreated',
+      headerName: 'Submission Date',
+      width: 200,
+      type: 'text'
+    },
+    {
+      field: 'download',
+      headerName: 'Download PDF',
+      width: 300,
+      renderCell: (params) => (
+        params.row.status == "cleared" ? <PDFDownloadLink document={<PDFDownloader application={params.row.id}/>} fileName="ClearanceForm">
+          {({loading}) => (loading ? <Button sx={{
+          bgcolor: "#001D3D",
+          borderRadius: 20,
+          fontFamily: 'Poppins',
+          fontSize: 16,
+          height: 40,
+          width: 200,
+          color: "white",
+        }}
+        variant="contained" startIcon={<DownloadIcon />} >
+        Loading...
+        </Button> : 
+        
+        <Button sx={{
+          bgcolor: "#001D3D",
+          borderRadius: 20,
+          fontFamily: 'Poppins',
+          fontSize: 16,
+          height: 40,
+          width: 200,
+          color: "white",
+        }}
+        variant="contained" startIcon={<DownloadIcon />} >
+        Download PDF
+        </Button>)}
+        </PDFDownloadLink> : <></>
+      )
+    }
+  ]
   const [rows, setRows] = useState([])
   const renderAfterCalled = useRef(false);
+
+  const [applicationStatus, setApplicationStatus] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:3001/get-application-status", {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        setApplicationStatus(data.status);
+      })
+      .catch(error => {
+        console.log("Error fetching application status:", error);
+      })
+  }, []);
 
   useEffect(()=>{
     if(!renderAfterCalled.current){
@@ -78,10 +104,10 @@ export default function ViewSubmissions(props) {
           console.log(application.student_submission.submission_remark)
           const newRow = {
             id: application._id,
-            link: application.student_submission.submission_remark,
+            step: application.step,
+            link: application.student_submission[application.student_submission.length- 1].submission_remark,
             status: application.status,
-            datecreated: application.student_submission.submission_date,
-            dateapproved: "N/A"
+            datecreated: application.student_submission[application.student_submission.length- 1].submission_date,
             
           }
           setRows((oldRows)=>[...oldRows, newRow])
@@ -99,6 +125,7 @@ export default function ViewSubmissions(props) {
         <h1 className="heading">View Clearance Applications</h1>
         <div className="table">
           <DataGrid
+            slots={{ toolbar: GridToolbar }}
             className='data-table'
             sx={{
               fontFamily: 'Poppins',

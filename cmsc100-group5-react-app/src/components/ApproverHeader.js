@@ -7,7 +7,7 @@ import { useLoaderData, useNavigate } from 'react-router-dom';
 
 import Cookies from 'universal-cookie';
 
-export default function AdminHeader(props) {
+export default function ApproverHeader(props) {
 
   const [open, setOpen] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(useLoaderData())
@@ -33,16 +33,14 @@ export default function AdminHeader(props) {
       <nav>
         <ul>
           <li><Link to={`/`} className="link-styles">Home</Link></li>
-          <li><Link to={`/create-approver`} className="link-styles">Create Approver Account</Link></li>
-          <li><Link to={`/manage-approvers`} className="link-styles">Manage Approver Accounts</Link></li>
         </ul>
         <div className="menu-container">
           <div className="menu-trigger" onClick={() => {setOpen(!open)}}>
             <FontAwesomeIcon icon={icon({name: 'user-circle'})} className='user-icon'/>
           </div>
-          <div className={`dropdown-menu menu-admin ${open? 'active' : 'inactive'}`}>
+          <div className={`dropdown-menu menu-approver ${open? 'active' : 'inactive'}`}>
             <ul>
-              <li><Link to={`/profile-admin`} className='dropdown-item user-profile-item'>View Profile</Link></li>
+              <li><Link to={`/profile-approver`} className='dropdown-item user-profile-item'>View Profile</Link></li>
             </ul>
             <ul>
               <li><a className='dropdown-item user-profile-item' onClick={logout}>Log Out</a></li>
