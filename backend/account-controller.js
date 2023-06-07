@@ -21,12 +21,11 @@ User.findOne({ email: req.query.upmail })
     select: "clearance_officer",
     populate: {
       path: "clearance_officer",
-      select: "fname mname lname" // Retrieve the fname mname and lname of the clearance officer
+      select: "fname mname lname"
     }
   })
   .exec().then((user) => {
       if (user) {
-        // Access the clearance officer details through the applications array
         const applications = user.applications;
 		console.log(applications)
         if (applications.length > 0) {
@@ -41,7 +40,7 @@ User.findOne({ email: req.query.upmail })
       }
     }).catch((err) => {
 		// Handle the error
-		console.error(err);
+		console.log(err);
 	  });
 }
 
