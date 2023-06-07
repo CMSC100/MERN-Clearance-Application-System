@@ -1,10 +1,10 @@
 import React from "react"
 import { useEffect, useState } from "react"
-import AdminHeader from "../components/AdminHeader"
+import ApproverHeader from "../components/ApproverHeader"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-export default function AdminProfile(props) {
+export default function ApproverProfile(props) {
     const [user, setUser] = useState([])
     useEffect(() => {
         fetch(`http://localhost:3001/get-user/?upmail=${localStorage.getItem("upmail")}`).then(response => response.json())
@@ -15,7 +15,7 @@ export default function AdminProfile(props) {
 
     return(
         <>
-        {<AdminHeader onClick={props.onClick}/>}
+        {<ApproverHeader onClick={props.onClick}/>}
             <div className="container profile">
                 <h1 className="heading profile">My Profile</h1>
                 <div className="divider"></div>
